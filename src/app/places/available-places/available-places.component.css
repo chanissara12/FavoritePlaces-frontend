@@ -1,0 +1,26 @@
+.fallback-text {
+  text-align: center;
+}
+
+div {
+  display: flex;
+  justify-content: flex-end;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+  color: #181223;
+  background-color: #8feeff;
+  border-radius: 4px;
+  border: none;
+  padding: 0.35rem 0.8rem;
+  font-size: 20px;
+  text-decoration: none;
+  margin-right: 2rem;
+}
+
+button:hover,
+button:active {
+  background-color: #68c4d4
+}

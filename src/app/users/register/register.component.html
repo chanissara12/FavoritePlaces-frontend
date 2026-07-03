@@ -1,0 +1,26 @@
+<app-modal>
+    <h2>Register</h2>
+    <form (ngSubmit)="onSubmit()">
+        <p>
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" [(ngModel)]="enteredUserName" />
+        </p>
+
+        <p>
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" [(ngModel)]="enteredPassword" />
+        </p>
+
+        <p>
+            <label for="comfirmPassword">Confirm password</label>
+            <input type="password" id="comfirmPassword" name="comfirmPassword" [(ngModel)]="enteredConfirmPassword" />
+        </p>
+
+        <p class="actions"><a routerLink="/login">Back to login</a></p>
+
+        <p class="actions">
+            <a routerLink="../">Cancel</a>
+            <button type="submit">Register</button>
+        </p>
+    </form>
+</app-modal>
