@@ -1,0 +1,39 @@
+<app-modal>
+    <div class="container">
+        <h2>Approve new places</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>img</th>
+                    <th>button</th>
+                </tr>
+            </thead>
+            @for (place of places(); track place.place_id) {
+            <tr>
+                <td>{{ place.title }}</td>
+                <td>{{ place.img_alt }}</td>
+                <td>
+                    <img [src]="place.img_src" alt="" width="400" height="300">
+                    <!-- {{ place.img_src }} -->
+                </td>
+                <td>
+                    <button>approve</button>
+                </td>
+            </tr>
+            }
+        </table>
+
+        <!-- @if(imagePreview) {
+            <img [src]="imagePreview" alt="" width="400px" height="300px">
+        } -->
+
+        <!-- <p class="actions"><a routerLink="/register">Register</a></p> -->
+
+        <p class="actions">
+            <a routerLink="../">Ok</a>
+            <!-- <button type="submit">Submit</button> -->
+        </p>
+    </div>
+</app-modal>

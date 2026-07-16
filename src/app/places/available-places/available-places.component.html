@@ -1,7 +1,14 @@
 <app-places-container title="Available Places">
-  <div>
-    <button>Add new place</button>
+  @if (currentUserRole().length > 0) {
+    <div>
+    <button routerLink="/new-place">Add new place</button>
   </div>
+  }
+  @if (currentUserRole().includes('admin')) {
+    <div>
+    <button routerLink="/approve-places">Approve places</button>
+  </div>
+  }
   @if (isFetching() && !error()) {
     <p class="fallback-text">Fetching available places...</p>
   }

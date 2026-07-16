@@ -4,7 +4,7 @@ dialog {
   z-index: 2;
   background: #d5c7bc;
   border-radius: 8px;
-  overflow: hidden;
+  overflow: auto;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   animation: slide-down-fade-in 0.3s ease-out forwards;
 }

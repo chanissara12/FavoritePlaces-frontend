@@ -6,22 +6,26 @@ import { PlacesContainerComponent } from '../places-container/places-container.c
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, throwError } from 'rxjs';
 import { PlacesService } from '../places.service';
+import { RouterLink } from "@angular/router";
+import { UsersService } from '../../users/users.service';
 
 @Component({
   selector: 'app-available-places',
   standalone: true,
   templateUrl: './available-places.component.html',
   styleUrl: './available-places.component.css',
-  imports: [PlacesComponent, PlacesContainerComponent],
+  imports: [PlacesComponent, PlacesContainerComponent, RouterLink],
 })
 export class AvailablePlacesComponent implements OnInit {
   places = signal<Place[] | undefined>(undefined);
   isFetching = signal(false);
   error = signal('');
   private placesService = inject(PlacesService);
+  private usersService = inject(UsersService);
   private httpClient = inject(HttpClient);
   private destroyRef = inject(DestroyRef);
   userPlaces = this.placesService.loadedUserPlaces;
+  currentUserRole = this.usersService.currentUserRoleData;
 
   // constructor(private httpClient: HttpClient) {}
 

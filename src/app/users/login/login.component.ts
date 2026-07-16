@@ -1,5 +1,5 @@
 import { Component, inject, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { UsersService } from '../users.service';
 import { ModalComponent } from "../../shared/modal/modal.component";
@@ -17,8 +17,10 @@ export class LoginComponent {
   private usersService = inject(UsersService);
   private router = inject(Router);
 
-
-  onSubmit() {
+  onSubmit(formData: NgForm) {
+    if (formData.form.invalid) {
+      return;
+    }
     this.usersService.UserLogin(this.enteredUserName(), this.enteredPassword()).subscribe({
       next: (user) => {
         this.usersService.isLoggedIn.set(true);

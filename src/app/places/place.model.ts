@@ -3,4 +3,6 @@ export interface Place {
   title: string;
   img_src: string;
   img_alt: string;
+  add_by: string;
+  isApprove: string;
 }
