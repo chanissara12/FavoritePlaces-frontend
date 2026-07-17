@@ -1,10 +1,10 @@
 <ul>
-  @for (place of places(); track place.place_id) {
+  @for (place of places(); track place.placeId) {
     <li class="place-item">
       <button (click)="onSelectPlace(place)">
         <img
-          [src]="place.img_src"
-          [alt]="place.img_alt"
+          [src]="place.imgSrc"
+          [alt]="place.imgAlt"
         />
         <h3>{{ place.title }}</h3>
       </button>

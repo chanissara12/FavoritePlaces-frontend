@@ -51,8 +51,8 @@ export class NewPlaceComponent {
 
     formData.append('title', this.enteredTitle());
     formData.append('alt', this.enteredAlt());
-    formData.append('file', this.selectedFile, filename);
-    if (this.usersService.currentUserRoleData().includes('admin')) {
+    formData.append('formFile', this.selectedFile, filename);
+    if (this.currentUser().roles.includes('admin')) {
       formData.append('add_by', 'admin');
       formData.append('isApproved', 'Y');
     } else {

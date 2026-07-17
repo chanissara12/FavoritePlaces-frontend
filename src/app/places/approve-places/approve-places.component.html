@@ -10,16 +10,16 @@
                     <th>button</th>
                 </tr>
             </thead>
-            @for (place of places(); track place.place_id) {
+            @for (place of places(); track place.placeId) {
             <tr>
                 <td>{{ place.title }}</td>
-                <td>{{ place.img_alt }}</td>
+                <td>{{ place.imgAlt }}</td>
                 <td>
-                    <img [src]="place.img_src" alt="" width="400" height="300">
+                    <img [src]="place.imgSrc" alt="" width="400" height="300">
                     <!-- {{ place.img_src }} -->
                 </td>
                 <td>
-                    <button>approve</button>
+                    <button (click)="approvePlace(place.placeId)">approve</button>
                 </td>
             </tr>
             }

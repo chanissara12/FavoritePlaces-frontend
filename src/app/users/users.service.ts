@@ -10,29 +10,27 @@ import { environment } from "../../environments/environment.development";
 })
 export class UsersService {
     private currentUser = signal<User>({
-        user_id: 0,
-        user_name: "",
-        password: ""
+        userId: 0,
+        userName: "",
+        roles: []
     });
-    private currentUserRole = signal<string[]>([]);
+    // private currentUserRole = signal<string[]>([]);
     isLoggedIn = signal(false);
     private httpClient = inject(HttpClient);
     private errorService = inject(ErrorService);
     private url = environment.urlApi + 'users/';
 
     currentUserData = this.currentUser.asReadonly();
-    currentUserRoleData = this.currentUserRole.asReadonly();
+    // currentUserRoleData = this.currentUserRole.asReadonly();
 
-    UserLogin(user_name: string, password: string) {
-        return this.httpClient.post<{ currentUser: User, roles: { user_id: number, role_id: string }[] }>(this.url + 'login', {
-            user_name: user_name,
+    UserLogin(userName: string, password: string) {
+        return this.httpClient.post<{ currentUser: User }>(this.url + 'login', {
+            userName: userName,
             password: password
         }).pipe(
             tap({
                 next: (resData) => {
                     this.currentUser.set(resData.currentUser);
-                    const roles = resData.roles.map(x => x.role_id);
-                    this.currentUserRole.set(roles);
                 }
             }),
             catchError(error => {
@@ -43,17 +41,11 @@ export class UsersService {
         )
     }
 
-    UserRegister(user_name: string, password: string) {
+    UserRegister(userName: string, password: string) {
         return this.httpClient.post<{ currentUser: User }>(this.url + 'register', {
-            user_name: user_name,
+            userName: userName,
             password: password
         }).pipe(
-            // map((resData) => {
-            //     if (Array.isArray(resData.currentUser)) {
-            //         return resData.currentUser[0];
-            //     }
-            //     return resData.currentUser;
-            // }),
             tap({
                 next: (resData) => {
                     this.currentUser.set(resData.currentUser);
@@ -68,9 +60,9 @@ export class UsersService {
 
     UserLogout() {
         this.currentUser.set({
-            user_id: 0,
-            user_name: "",
-            password: ""
+            userId: 0,
+            userName: "",
+            roles: []
         });
         this.isLoggedIn.set(false)
     }

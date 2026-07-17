@@ -36,7 +36,7 @@ export class PlacesService {
 
   loadUserPlaces() {
     return this.fetchPlaces(
-      this.url + 'user-places?user_id=' + this.currentUser().user_id,
+      this.url + 'user-places?userId=' + this.currentUser().userId,
       'Please Login to see your favorite places.'
     ).pipe(
       tap({
@@ -56,18 +56,18 @@ export class PlacesService {
     const prevPlaces = this.userPlaces();
     // this.userPlaces.update(prevPlaces => [...prevPlaces, place]);
 
-    if (this.currentUser().user_id === 0) {
+    if (this.currentUser().userId === 0) {
       this.errorService.showError('Please login to save your favorite places.');
       return throwError(() => new Error('Please login to save your favorite places.'))
     }
 
-    if (!prevPlaces.some((p) => p.place_id === place.place_id)) {
+    if (!prevPlaces.some((p) => p.placeId === place.placeId)) {
       this.userPlaces.set([...prevPlaces, place]);
     }
 
     return this.httpClient.post(this.url + 'user-places/post', {
-      user_id: this.currentUser().user_id,
-      place_id: place.place_id
+      userId: this.currentUser().userId,
+      placeId: place.placeId
     }).pipe(
       catchError(error => {
         this.userPlaces.set(prevPlaces);
@@ -80,11 +80,11 @@ export class PlacesService {
   removeUserPlace(place: Place) {
     const prevPlaces = this.userPlaces();
 
-    if (prevPlaces.some((p) => p.place_id === place.place_id)) {
-      this.userPlaces.set(prevPlaces.filter(p => p.place_id !== place.place_id));
+    if (prevPlaces.some((p) => p.placeId === place.placeId)) {
+      this.userPlaces.set(prevPlaces.filter(p => p.placeId !== place.placeId));
     }
 
-    return this.httpClient.delete(this.url + 'user-places/delete?user_id=' + this.currentUser().user_id + '&place_id=' + place.place_id).pipe(
+    return this.httpClient.delete(this.url + 'user-places/delete?userId=' + this.currentUser().userId + '&placeId=' + place.placeId).pipe(
       catchError(error => {
         this.userPlaces.set(prevPlaces);
         this.errorService.showError('Failed to remove the selected place.');
@@ -93,10 +93,14 @@ export class PlacesService {
     ) 
   }
 
-  addNewPlaces(data: FormData) {
-    return this.httpClient.post(this.url, data)
+  approveUserPlaces(placeId: number) {
+    return this.httpClient.post(this.url + 'user-places/approve-place', placeId)
   }
-
+  
+  addNewPlaces(data: FormData) {
+    return this.httpClient.post(this.url + 'new-place', data)
+  }
+  
   private fetchPlaces(url: string, errorMessage: string) {
     return this.httpClient
       .get<{ places: Place[] }>(url)

@@ -25,7 +25,8 @@ export class AvailablePlacesComponent implements OnInit {
   private httpClient = inject(HttpClient);
   private destroyRef = inject(DestroyRef);
   userPlaces = this.placesService.loadedUserPlaces;
-  currentUserRole = this.usersService.currentUserRoleData;
+  currentUser = this.usersService.currentUserData;
+  // currentUserRole = this.usersService.currentUserRoleData;
 
   // constructor(private httpClient: HttpClient) {}
 
@@ -51,7 +52,7 @@ export class AvailablePlacesComponent implements OnInit {
   }
 
   onSelectPlace(selectedPlace: Place) {
-    if (!this.userPlaces()?.find((p) => p.place_id === selectedPlace.place_id)) {
+    if (!this.userPlaces()?.find((p) => p.placeId === selectedPlace.placeId)) {
       const subscription = this.placesService.addPlaceToUserPlaces(selectedPlace)
         .subscribe({
           next: (resData) => console.log(resData)

@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { ModalComponent } from "../../shared/modal/modal.component";
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { PlacesService } from '../places.service';
 import { Place } from '../place.model';
 
@@ -13,8 +13,8 @@ import { Place } from '../place.model';
 })
 export class ApprovePlacesComponent {
   private placesService = inject(PlacesService);
+  private router = inject(Router);
   places = signal<Place[] | undefined>(undefined);
-  // waitForApprovePlaces = this.places().filter(x => x.isApprove === 'N')
   
   ngOnInit() {
     this.placesService.loadUnapprovePlaces().subscribe({
@@ -25,7 +25,15 @@ export class ApprovePlacesComponent {
     
   }
   
-  onSubmit() {
+  approvePlace(placeId: number) {
+    this.placesService.approveUserPlaces(placeId).subscribe({
+      next: (place) => {
+        console.log(place);
 
+        this.router.navigate([''], {
+          replaceUrl: true
+        })
+      }
+    })
   }
 }

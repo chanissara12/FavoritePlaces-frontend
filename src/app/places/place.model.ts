@@ -1,8 +1,8 @@
 export interface Place {
-  place_id: number;
+  placeId: number;
   title: string;
-  img_src: string;
-  img_alt: string;
-  add_by: string;
-  isApprove: string;
+  imgSrc: string;
+  imgAlt: string;
+  addBy: string;
+  isApproved: string;
 }
