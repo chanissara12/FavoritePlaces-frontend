@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { UsersService } from '../users.service';
-import { ModalComponent } from "../../shared/modal/modal.component";
+import { UsersService } from '../../services/users.service';
+import { ModalComponent } from "../../../shared/modal/modal.component";
 
 @Component({
   selector: 'app-login',

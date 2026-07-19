@@ -1,11 +1,11 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 
 import { PlacesContainerComponent } from '../places-container/places-container.component';
-import { PlacesComponent } from '../places.component';
-import { Place } from '../place.model';
+import { PlacesComponent } from '../../places.component';
+import { Place } from '../../models/place.model';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, throwError } from 'rxjs';
-import { PlacesService } from '../places.service';
+import { PlacesService } from '../../services/places.service';
 
 @Component({
   selector: 'app-user-places',

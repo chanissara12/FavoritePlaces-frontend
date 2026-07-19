@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
-import { ModalComponent } from "../../shared/modal/modal.component";
+import { ModalComponent } from "../../../shared/modal/modal.component";
 import { Router, RouterLink } from '@angular/router';
-import { PlacesService } from '../places.service';
-import { Place } from '../place.model';
+import { PlacesService } from '../../services/places.service';
+import { Place } from '../../models/place.model';
 
 @Component({
   selector: 'app-approve-places',

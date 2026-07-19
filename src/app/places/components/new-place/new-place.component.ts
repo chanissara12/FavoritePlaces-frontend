@@ -1,9 +1,9 @@
 import { Component, inject, signal } from '@angular/core';
-import { ModalComponent } from "../../shared/modal/modal.component";
+import { ModalComponent } from "../../../shared/modal/modal.component";
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { PlacesService } from '../places.service';
-import { UsersService } from '../../users/users.service';
+import { PlacesService } from '../../services/places.service';
+import { UsersService } from '../../../users/services/users.service';
 
 @Component({
   selector: 'app-new-place',

@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
-import { UsersService } from '../users.service';
+import { UsersService } from '../../services/users.service';
 import { FormsModule } from '@angular/forms';
-import { ModalComponent } from "../../shared/modal/modal.component";
-import { ErrorService } from '../../shared/error.service';
+import { ModalComponent } from "../../../shared/modal/modal.component";
+import { ErrorService } from '../../../shared/error.service';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({

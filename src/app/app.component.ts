@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterOutlet } from "@angular/router";
 import { ErrorService } from './shared/error.service';
-import { UsersService } from './users/users.service';
+import { UsersService } from './users/services/users.service';
 import { ErrorModalComponent } from "./shared/modal/error-modal/error-modal.component";
 
 @Component({

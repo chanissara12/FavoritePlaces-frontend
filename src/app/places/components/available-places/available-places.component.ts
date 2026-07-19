@@ -1,13 +1,13 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 
-import { Place } from '../place.model';
-import { PlacesComponent } from '../places.component';
+import { Place } from '../../models/place.model';
+import { PlacesComponent } from '../../places.component';
 import { PlacesContainerComponent } from '../places-container/places-container.component';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, throwError } from 'rxjs';
-import { PlacesService } from '../places.service';
+import { PlacesService } from '../../services/places.service';
 import { RouterLink } from "@angular/router";
-import { UsersService } from '../../users/users.service';
+import { UsersService } from '../../../users/services/users.service';
 
 @Component({
   selector: 'app-available-places',
