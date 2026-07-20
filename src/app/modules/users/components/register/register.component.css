@@ -11,6 +11,7 @@ h2 {
   border: none;
   font-size: 1.5rem;
   cursor: pointer;
+  padding-top: 0.25rem;
 }
 
 .container {
@@ -58,5 +59,6 @@ input {
 
 button:hover,
 button:active {
-  background-color: #68c4d4
+  background-color: #68c4d4;
+  border-radius: 4px;
 }

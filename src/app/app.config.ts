@@ -3,6 +3,7 @@ import { provideRouter, withComponentInputBinding, withRouterConfig } from "@ang
 import { routes } from "./app.routes";
 import { HttpRequest, HttpHandlerFn, provideHttpClient, withInterceptors, HttpEventType } from '@angular/common/http';
 import { tap } from 'rxjs';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 function loggingInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
     console.log('[Outgoing Request]');
@@ -26,5 +27,5 @@ export const appConfig: ApplicationConfig = {
     ),
     provideRouter(routes, withComponentInputBinding(), withRouterConfig({
         paramsInheritanceStrategy: 'always'
-    }))]
+    })), provideAnimationsAsync()]
 }

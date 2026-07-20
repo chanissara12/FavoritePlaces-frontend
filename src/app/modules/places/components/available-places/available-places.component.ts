@@ -51,7 +51,7 @@ export class AvailablePlacesComponent implements OnInit {
     })
   }
 
-  onSelectPlace(selectedPlace: Place) {
+  onAddPlace(selectedPlace: Place) {
     if (!this.userPlaces()?.find((p) => p.placeId === selectedPlace.placeId)) {
       const subscription = this.placesService.addPlaceToUserPlaces(selectedPlace)
         .subscribe({

@@ -1,0 +1,17 @@
+<app-modal>
+    <div class="container">
+        <button class="close-btn" (click)="onClose()">X</button>
+        <h2>{{ place?.title }}</h2>
+        <img [src]="place?.imgSrc" [alt]="place?.imgAlt">
+        <p>{{ place?.imgAlt }}</p>
+        <h2>Comments</h2>
+        <!-- <ul>
+            @for (comment of place?.comments; track comment.commentId) {
+            <li class="comment-item">
+                <h3>{{ comment.title }}</h3>
+                <p>{{ comment.text }}</p>
+            </li>
+            }
+        </ul> -->
+    </div>
+</app-modal>

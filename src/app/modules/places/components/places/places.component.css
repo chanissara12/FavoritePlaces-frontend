@@ -29,8 +29,11 @@ ul {
 
 .place-item .add-btn:hover,
 .place-item .add-btn:focus {
-  /* box-shadow: 0 0 8px 4px rgba(255, 217, 0, 0.6); */
-  /* border-radius: 8px; */
+  background-color: #fef9c3;
+}
+
+.place-item .delete-btn:hover,
+.place-item .delete-btn:focus {
   background-color: #fef9c3;
 }
 
@@ -48,14 +51,31 @@ ul {
   transform: rotate(-5deg);
 } */
 
-.place-item .add-btn {
+.place-item .actions {
   position: absolute;
-  width: 25px;
-  height: 25px;
-  justify-content: right;
   top: 1rem;
   right: 1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  /* padding: 0.25rem; */
+}
+
+.btn {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30px;
+  height: 30px;
   background-color: #feee86;
+  color:#1f1c2c;
+  border-radius: 4px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.4);
+}
+
+.delete-btn {
+  background-color: #f87171;
 }
 
 .place-item img {
@@ -63,6 +83,16 @@ ul {
   height: 100%;
   object-fit: cover;
   border-radius: 0.5rem;
+}
+
+.place-item .comment-btn {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  bottom: 1rem;
+  left: 1rem;
+  padding: 0.25rem;
+  background-color: #feee86;
 }
 
 .place-item h3 {

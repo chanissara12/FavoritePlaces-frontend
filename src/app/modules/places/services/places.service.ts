@@ -13,25 +13,25 @@ import { environment } from '../../../../environments/environment.development';
 export class PlacesService {
   private errorService = inject(ErrorService);
   private httpClient = inject(HttpClient);
-  // private places = signal<Place[]>([]);
+  private places = signal<Place[]>([]);
   private userPlaces = signal<Place[]>([]);
   private usersService = inject(UsersService);
   private url = environment.urlApi + 'places/';
   currentUser = this.usersService.currentUserData;
 
-  // loadedAvailablePlaces = this.places.asReadonly();
+  loadedAvailablePlaces = this.places.asReadonly();
   loadedUserPlaces = this.userPlaces.asReadonly();
 
   loadAvailablePlaces() {
     return this.fetchPlaces(
       this.url + 'available-places',
       'Some thing went wrong fetching the available places. Please try again later.'
+    )
+    .pipe(
+      tap({
+        next: (places) => this.places.set(places)
+      })
     );
-    // .pipe(
-    //   tap({
-    //     next: (places) => this.places.set(places)
-    //   })
-    // );
   }
 
   loadUserPlaces() {
@@ -50,6 +50,15 @@ export class PlacesService {
       this.url + 'unapprove-places',
       'Some thing went wrong fetching the available places. Please try again later.'
     );
+  }
+
+  loadPlacesComments() {
+    return this.httpClient.get<{ comments: Comment[] }>(this.url + 'places-comments')
+    .pipe(
+      map((resData) => resData.comments),
+      catchError((error) =>
+        throwError(() => new Error('Some thing went wrong fetching the comments. Please try again later.')))
+    )
   }
 
   addPlaceToUserPlaces(place: Place) {
@@ -99,6 +108,10 @@ export class PlacesService {
   
   addNewPlaces(data: FormData) {
     return this.httpClient.post(this.url + 'new-place', data)
+  }
+
+  deletePlace(placeId: number) {
+    return this.httpClient.post(this.url + 'delete-place', placeId)
   }
   
   private fetchPlaces(url: string, errorMessage: string) {

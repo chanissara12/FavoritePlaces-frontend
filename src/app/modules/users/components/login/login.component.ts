@@ -3,11 +3,12 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { UsersService } from '../../services/users.service';
 import { ModalComponent } from "../../../../shared/modal/modal.component";
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, RouterLink, ModalComponent],
+  imports: [FormsModule, RouterLink, ModalComponent, MatIconModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
