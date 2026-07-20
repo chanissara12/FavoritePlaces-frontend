@@ -3,9 +3,9 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Place } from '../models/place.model';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { catchError, map, tap, throwError } from 'rxjs';
-import { ErrorService } from '../../shared/error.service';
+import { ErrorService } from '../../../shared/error.service';
 import { UsersService } from '../../users/services/users.service';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root',
