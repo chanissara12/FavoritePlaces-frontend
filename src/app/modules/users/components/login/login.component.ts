@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { UsersService } from '../../services/users.service';
-import { ModalComponent } from "../../../shared/modal/modal.component";
+import { ModalComponent } from "../../../../shared/modal/modal.component";
 
 @Component({
   selector: 'app-login',
@@ -16,6 +16,12 @@ export class LoginComponent {
   enteredPassword = signal('');
   private usersService = inject(UsersService);
   private router = inject(Router);
+
+  onClose() {
+    this.router.navigate([''], {
+      replaceUrl: true
+    })
+  }
 
   onSubmit(formData: NgForm) {
     if (formData.form.invalid) {

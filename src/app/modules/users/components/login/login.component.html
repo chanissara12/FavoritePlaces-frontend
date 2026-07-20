@@ -1,0 +1,36 @@
+<app-modal>
+    <div class="container">
+        <button class="close-btn" (click)="onClose()">X</button>
+        <h2>Login</h2>
+        <form #form="ngForm" (ngSubmit)="onSubmit(form)">
+            <p>
+                <label for="username">Username: </label>
+                <input type="text" id="username" name="username" [(ngModel)]="enteredUserName" required
+                    #username="ngModel" />
+                @if (username.touched && enteredUserName() === "") {
+            <p class="control-error">Invalid username entered.</p>
+            }
+            </p>
+
+            <p>
+                <label for="password">Password: </label>
+                <input type="password" id="password" name="password" [(ngModel)]="enteredPassword" required />
+            </p>
+
+            <p><a class="to-register" routerLink="/register">If you don't have an account, register here</a></p>
+
+            <p class="actions">
+                <!-- <a routerLink="../">Cancel</a> -->
+                <button class="login-btn" type="submit">Login</button>
+            </p>
+        </form>
+    </div>
+</app-modal>
+
+
+
+<!-- @if (password.touched && password.dirty && password.invalid) {
+  <p class="control-error">
+    Invalid password entered - must be at least 6 characters long.
+  </p>
+  } -->

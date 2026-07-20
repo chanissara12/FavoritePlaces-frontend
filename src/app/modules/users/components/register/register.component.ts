@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { UsersService } from '../../services/users.service';
 import { FormsModule } from '@angular/forms';
-import { ModalComponent } from "../../../shared/modal/modal.component";
-import { ErrorService } from '../../../shared/error.service';
+import { ModalComponent } from "../../../../shared/modal/modal.component";
+import { ErrorService } from '../../../../shared/error.service';
 import { Router, RouterLink } from '@angular/router';
 
 @Component({
@@ -19,6 +19,12 @@ export class RegisterComponent {
   private usersService = inject(UsersService);
   private errorService = inject(ErrorService);
   private router = inject(Router);
+
+  onClose() {
+    this.router.navigate([''], {
+      replaceUrl: true
+    })
+  }
 
   onSubmit() {
     if (this.enteredPassword() === this.enteredConfirmPassword()) {

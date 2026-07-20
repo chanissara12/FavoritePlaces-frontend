@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { AvailablePlacesComponent } from "../places/components/available-places/available-places.component";
-import { UserPlacesComponent } from "../places/components/user-places/user-places.component";
+import { AvailablePlacesComponent } from "../../modules/places/components/available-places/available-places.component";
+import { UserPlacesComponent } from "../../modules/places/components/user-places/user-places.component";
 import { HeaderComponent } from "../header/header.component";
 
 @Component({
