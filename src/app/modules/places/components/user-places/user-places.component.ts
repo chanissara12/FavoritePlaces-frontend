@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 
 import { PlacesContainerComponent } from '../places-container/places-container.component';
-import { PlacesComponent } from '../places/places.component';
+import { PlacesComponent } from '../../pages/places/places.component';
 import { Place } from '../../models/place.model';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, throwError } from 'rxjs';

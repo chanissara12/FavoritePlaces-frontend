@@ -1,0 +1,30 @@
+<ul>
+    @for (place of places(); track place.placeId) {
+    <li class="place-item">
+        <div class="actions">
+            <!-- @if (isFavorite(place.placeId)) {
+                <mat-icon class="btn add-btn" title="Remove from favorites" (click)="onAddPlace(place)">favorite</mat-icon>
+            } @else {
+                <mat-icon class="btn add-btn" title="Add to favorites" (click)="onAddPlace(place)">favorite_border</mat-icon>
+            } -->
+            <mat-icon class="btn add-btn" title="Add to favorites"
+                (click)="onAddPlace(place)">favorite_border</mat-icon>
+            @if (isAdmin) {
+            <mat-icon class="btn delete-btn" title="Delete this place"
+                (click)="onDeletePlace(place.placeId)">delete</mat-icon>
+            }
+        </div>
+        <button class="btn comment-btn" (click)="onAddPlace(place)" title="Add a comment">
+            <mat-icon>
+                comment
+            </mat-icon>
+            ({{ commentCount().get(place.placeId) || 0 }})
+        </button>
+
+        <button [routerLink]="['/place-detail', place.placeId]">
+            <img [src]="place.imgSrc" [alt]="place.imgAlt" />
+        </button>
+        <h3>{{ place.title }}</h3>
+    </li>
+    }
+</ul>

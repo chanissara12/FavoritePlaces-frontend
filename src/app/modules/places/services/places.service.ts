@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 
-import { Place } from '../models/place.model';
+import { Place, PlaceComment } from '../models/place.model';
 import { HttpClient, HttpContext } from '@angular/common/http';
 import { catchError, map, tap, throwError } from 'rxjs';
 import { ErrorService } from '../../../shared/error.service';
@@ -13,14 +13,16 @@ import { environment } from '../../../../environments/environment.development';
 export class PlacesService {
   private errorService = inject(ErrorService);
   private httpClient = inject(HttpClient);
-  private places = signal<Place[]>([]);
-  private userPlaces = signal<Place[]>([]);
   private usersService = inject(UsersService);
   private url = environment.urlApi + 'places/';
+  private places = signal<Place[]>([]);
+  private userPlaces = signal<Place[]>([]);
+  private placesComments = signal<PlaceComment[]>([]);
   currentUser = this.usersService.currentUserData;
 
   loadedAvailablePlaces = this.places.asReadonly();
   loadedUserPlaces = this.userPlaces.asReadonly();
+  loadedPlacesComments = this.placesComments.asReadonly();
 
   loadAvailablePlaces() {
     return this.fetchPlaces(
@@ -53,12 +55,20 @@ export class PlacesService {
   }
 
   loadPlacesComments() {
-    return this.httpClient.get<{ comments: Comment[] }>(this.url + 'places-comments')
+    return this.httpClient.get<{ comments: PlaceComment[] }>(this.url + 'places-comments')
     .pipe(
-      map((resData) => resData.comments),
+      map((resData) => {
+        this.placesComments.set(resData.comments);
+      }),
       catchError((error) =>
         throwError(() => new Error('Some thing went wrong fetching the comments. Please try again later.')))
     )
+    // return this.httpClient.get<{ comments: PlaceComment[] }>(this.url + 'places-comments')
+    // .pipe(
+    //   map((resData) => this.placesComments.set(resData.comments)),
+    //   catchError((error) =>
+    //     throwError(() => new Error('Some thing went wrong fetching the comments. Please try again later.')))
+    // )
   }
 
   addPlaceToUserPlaces(place: Place) {

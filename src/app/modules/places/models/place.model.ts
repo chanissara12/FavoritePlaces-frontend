@@ -7,7 +7,7 @@ export interface Place {
   isApproved: string;
 }
 
-export interface Comment {
+export interface PlaceComment {
   userId: number;
   userName: string;
   placeId: number;

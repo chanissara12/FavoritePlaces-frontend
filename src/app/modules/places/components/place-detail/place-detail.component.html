@@ -5,13 +5,17 @@
         <img [src]="place?.imgSrc" [alt]="place?.imgAlt">
         <p>{{ place?.imgAlt }}</p>
         <h2>Comments</h2>
-        <!-- <ul>
-            @for (comment of place?.comments; track comment.commentId) {
+    </div>
+    <div class="comments-container">
+        <ul>
+            @for (comment of thisPlaceComments; track comment.userId) {
             <li class="comment-item">
-                <h3>{{ comment.title }}</h3>
-                <p>{{ comment.text }}</p>
+                <h3>{{ comment.userName }}</h3>
+                <p><mat-icon>star_border</mat-icon> {{ comment.rating }}</p>
+                <p>{{ comment.comment }}</p>
             </li>
             }
-        </ul> -->
+        </ul>
     </div>
+
 </app-modal>

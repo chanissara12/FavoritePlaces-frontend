@@ -1,7 +1,7 @@
 import { Component, computed, inject, input, output, signal } from '@angular/core';
 
-import { Place } from '../../models/place.model';
-import { RouterLink } from '@angular/router';
+import { Place, PlaceComment } from '../../models/place.model';
+import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { UsersService } from '../../../users/services/users.service';
 import { PlacesService } from '../../services/places.service';
@@ -17,22 +17,34 @@ export class PlacesComponent {
   places = input.required<Place[]>();
   // userPlaces = input.required<Place[] | undefined>();
   selectPlace = output<Place>();
+  deletePlace = output<number>();
   private usersService = inject(UsersService);
   private placesService = inject(PlacesService);
+  private router = inject(Router);
   currentUser = this.usersService.currentUserData();
   isAdmin = this.currentUser.roles.includes('admin');
   userFavoritePlaces = signal<Place[] | undefined>([]);
+  comments = this.placesService.loadedPlacesComments;
 
   ngOnInit() {
-    // console.log('userPlaces', this.userPlaces);
-    // console.log('userPlaces', this.userPlaces());
     if (this.usersService.isLoggedIn()) {
       this.placesService.loadUserPlaces().subscribe({
         next: (userPlaces) => this.userFavoritePlaces.set(userPlaces),
       });
     }
-    console.log('userPlaces', this.userFavoritePlaces);
+    this.placesService.loadPlacesComments().subscribe();
   }
+
+  commentCount = computed(() => {
+    const counts = new Map<number, number>(); //สร้าง map เก็บ placeId และจำนวน comment
+
+    //ใช้ forEach เพื่อวนลูป comment และนับจำนวนเก็บไว้ใน map
+    this.comments().forEach((comment) => {
+      counts.set(comment.placeId, (counts.get(comment.placeId) || 0) + 1);
+    });
+
+    return counts
+  })
 
   // isFavorite(placeId: number) {
   //   return this.userFavoritePlaces().some(x => x.placeId === placeId);
@@ -51,10 +63,6 @@ export class PlacesComponent {
   }
 
   onDeletePlace(placeId: number) {
-    this.placesService.deletePlace(placeId).subscribe({
-      next: (resData) => {
-        console.log(resData);
-      }
-    })
+    this.deletePlace.emit(placeId);
   }
 }

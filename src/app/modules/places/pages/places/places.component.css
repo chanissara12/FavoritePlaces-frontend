@@ -87,12 +87,15 @@ ul {
 
 .place-item .comment-btn {
   position: absolute;
-  width: 30px;
+  width: 60px;
   height: 30px;
   bottom: 1rem;
   left: 1rem;
   padding: 0.25rem;
   background-color: #feee86;
+  color: #1f1c2c;
+  gap: 0.25rem;
+  border-radius: 4px;
 }
 
 .place-item h3 {
