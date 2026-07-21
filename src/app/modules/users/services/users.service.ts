@@ -35,8 +35,7 @@ export class UsersService {
             }),
             catchError(error => {
                 this.errorService.showError(error.error);
-                this.errorService.showError(error.error.title);
-                return throwError(() => new Error(error.error.title))
+                return throwError(() => new Error(error.error))
             })
         )
     }

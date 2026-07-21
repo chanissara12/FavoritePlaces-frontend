@@ -29,11 +29,11 @@ export class PlacesService {
       this.url + 'available-places',
       'Some thing went wrong fetching the available places. Please try again later.'
     )
-    .pipe(
-      tap({
-        next: (places) => this.places.set(places)
-      })
-    );
+      .pipe(
+        tap({
+          next: (places) => this.places.set(places)
+        })
+      );
   }
 
   loadUserPlaces() {
@@ -56,13 +56,13 @@ export class PlacesService {
 
   loadPlacesComments() {
     return this.httpClient.get<{ comments: PlaceComment[] }>(this.url + 'places-comments')
-    .pipe(
-      map((resData) => {
-        this.placesComments.set(resData.comments);
-      }),
-      catchError((error) =>
-        throwError(() => new Error('Some thing went wrong fetching the comments. Please try again later.')))
-    )
+      .pipe(
+        map((resData) => {
+          this.placesComments.set(resData.comments);
+        }),
+        catchError((error) =>
+          throwError(() => new Error('Some thing went wrong fetching the comments. Please try again later.')))
+      )
     // return this.httpClient.get<{ comments: PlaceComment[] }>(this.url + 'places-comments')
     // .pipe(
     //   map((resData) => this.placesComments.set(resData.comments)),
@@ -103,27 +103,46 @@ export class PlacesService {
       this.userPlaces.set(prevPlaces.filter(p => p.placeId !== place.placeId));
     }
 
-    return this.httpClient.delete(this.url + 'user-places/delete?userId=' + this.currentUser().userId + '&placeId=' + place.placeId).pipe(
-      catchError(error => {
-        this.userPlaces.set(prevPlaces);
-        this.errorService.showError('Failed to remove the selected place.');
-        return throwError(() => new Error('Failed to remove the selected place.'))
-      })
-    ) 
+    return this.httpClient.delete(this.url + 'user-places/delete?userId=' + this.currentUser().userId + '&placeId=' + place.placeId)
+      .pipe(
+        catchError(error => {
+          this.userPlaces.set(prevPlaces);
+          this.errorService.showError('Failed to remove the selected place.');
+          return throwError(() => new Error('Failed to remove the selected place.'))
+        })
+      )
   }
 
   approveUserPlaces(placeId: number) {
     return this.httpClient.post(this.url + 'user-places/approve-place', placeId)
+      .pipe(
+        catchError(error => {
+          this.errorService.showError(error.error);
+          return throwError(() => new Error(error.error))
+        })
+      )
   }
-  
+
   addNewPlaces(data: FormData) {
     return this.httpClient.post(this.url + 'new-place', data)
+      .pipe(
+        catchError(error => {
+          this.errorService.showError(error.error);
+          return throwError(() => new Error(error.error))
+        })
+      )
   }
 
   deletePlace(placeId: number) {
     return this.httpClient.post(this.url + 'delete-place', placeId)
+      .pipe(
+        catchError(error => {
+          this.errorService.showError(error.error);
+          return throwError(() => new Error(error.error))
+        })
+      )
   }
-  
+
   private fetchPlaces(url: string, errorMessage: string) {
     return this.httpClient
       .get<{ places: Place[] }>(url)
