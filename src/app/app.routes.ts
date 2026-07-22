@@ -5,6 +5,7 @@ import { RegisterComponent } from "./modules/users/components/register/register.
 import { NewPlaceComponent } from "./modules/places/components/new-place/new-place.component";
 import { ApprovePlacesComponent } from "./modules/places/components/approve-places/approve-places.component";
 import { PlaceDetailComponent } from "./modules/places/components/place-detail/place-detail.component";
+import { UserProfileComponent } from "./modules/users/components/user-profile/user-profile.component";
 
 export const routes: Routes = [
         {
@@ -30,5 +31,9 @@ export const routes: Routes = [
         {
             path: 'place-detail/:placeId',
             component: PlaceDetailComponent
+        },
+        {
+            path: 'user-profile/:userId',
+            component: UserProfileComponent
         }
     ]

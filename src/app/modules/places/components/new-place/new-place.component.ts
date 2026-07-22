@@ -59,6 +59,7 @@ export class NewPlaceComponent {
       formData.append('add_by', 'user');
       formData.append('isApproved', 'N');
     }
+    formData.append('uploaded_user_id', this.currentUser().userId.toString());
 
     console.log(formData);
     

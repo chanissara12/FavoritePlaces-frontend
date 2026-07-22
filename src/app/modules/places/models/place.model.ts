@@ -5,6 +5,7 @@ export interface Place {
   imgAlt: string;
   addBy: string;
   isApproved: string;
+  uploadedUser: number;
 }
 
 export interface PlaceComment {

@@ -1,14 +1,5 @@
 @if(error()) {
-  <app-error-modal title="An error occured!" [message]="error()" />
-}
-
-@if(isLoggedIn()) {
-  <div>
-    <p>{{ currentUser().userName }}</p>
-    <a (click)="onLogOut()">Logout</a>
-  </div>
-} @else {
-  <div><a routerLink="/login">Login</a></div>
+<app-error-modal title="An error occured!" [message]="error()" />
 }
 
 <router-outlet />

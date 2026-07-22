@@ -1,25 +1,17 @@
 import { Component, inject } from '@angular/core';
-import { RouterLink, RouterOutlet } from "@angular/router";
-import { ErrorService } from './shared/error.service';
-import { UsersService } from './modules/users/services/users.service';
+import { RouterOutlet } from "@angular/router";
 import { ErrorModalComponent } from "./shared/modal/error-modal/error-modal.component";
+import { ErrorService } from './shared/error.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
-  imports: [RouterOutlet, ErrorModalComponent, RouterLink],
+  imports: [RouterOutlet, ErrorModalComponent],
 })
 export class AppComponent {
   private errorService = inject(ErrorService);
-  private usersService = inject(UsersService);
-  currentUser = this.usersService.currentUserData;
-
+  
   error = this.errorService.error;
-  isLoggedIn = this.usersService.isLoggedIn;
-
-  onLogOut() {
-    this.usersService.UserLogout();
-  }
 }

@@ -1,7 +1,15 @@
+@if(isLoggedIn()) {
+<div>
+    <mat-icon [routerLink]="['/user-profile', currentUser().userId ]">account_circle</mat-icon>
+    <p>{{ currentUser().userName }}</p>
+    <a (click)="onLogOut()">Logout</a>
+</div>
+} @else {
+<div><a routerLink="/login">Login</a></div>
+}
+
 <app-header />
 
 <main>
-  <app-available-places />
-
-  <app-user-places />
+    <app-available-places />
 </main>
