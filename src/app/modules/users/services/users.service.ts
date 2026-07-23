@@ -4,6 +4,7 @@ import { HttpClient } from "@angular/common/http";
 import { ErrorService } from "../../../shared/error.service";
 import { catchError, map, tap, throwError } from "rxjs";
 import { environment } from "../../../../environments/environment.development";
+import { getErrorMessages } from "../../../shared/utils/get-error-messages";
 
 @Injectable({
     providedIn: 'root'
@@ -34,8 +35,9 @@ export class UsersService {
                 }
             }),
             catchError(error => {
-                this.errorService.showError(error.error);
-                return throwError(() => new Error(error.error))
+                let errorMessages = getErrorMessages(error)
+                this.errorService.showError(errorMessages);
+                return throwError(() => new Error(errorMessages))
             })
         )
     }
@@ -51,8 +53,9 @@ export class UsersService {
                 }
             }),
             catchError(error => {
-                this.errorService.showError(error.error);
-                return throwError(() => new Error(error.error))
+                let errorMessages = getErrorMessages(error)
+                this.errorService.showError(errorMessages);
+                return throwError(() => new Error(errorMessages))
             })
         )
     }

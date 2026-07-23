@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { ModalComponent } from "../../../../shared/modal/modal.component";
 import { Router, RouterLink } from '@angular/router';
 import { PlacesService } from '../../services/places.service';
-import { Place } from '../../models/place.model';
+import { PlacesViewModel } from '../../models/place.model';
 
 @Component({
   selector: 'app-approve-places',
@@ -14,7 +14,7 @@ import { Place } from '../../models/place.model';
 export class ApprovePlacesComponent {
   private placesService = inject(PlacesService);
   private router = inject(Router);
-  places = signal<Place[] | undefined>(undefined);
+  places = signal<PlacesViewModel[] | undefined>(undefined);
   
   ngOnInit() {
     this.placesService.loadUnapprovePlaces().subscribe({

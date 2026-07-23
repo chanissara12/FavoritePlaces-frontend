@@ -1,7 +1,7 @@
 import { Component, inject, input, signal } from '@angular/core';
 import { ModalComponent } from "../../../../shared/modal/modal.component";
 import { PlacesService } from '../../services/places.service';
-import { Place, PlaceComment } from '../../models/place.model';
+import { PlacesViewModel, PlaceComment } from '../../models/place.model';
 import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -16,7 +16,7 @@ export class PlaceDetailComponent {
   placeId = input.required<number>();
   private placesService = inject(PlacesService);
   private router = inject(Router);
-  place: Place | undefined;
+  place: PlacesViewModel | undefined;
   comments = this.placesService.loadedPlacesComments;
   thisPlaceComments: PlaceComment[] = [];
 

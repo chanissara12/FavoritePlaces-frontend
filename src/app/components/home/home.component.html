@@ -1,5 +1,5 @@
 @if(isLoggedIn()) {
-<div>
+<div class="gap-2">
     <mat-icon [routerLink]="['/user-profile', currentUser().userId ]">account_circle</mat-icon>
     <p>{{ currentUser().userName }}</p>
     <a (click)="onLogOut()">Logout</a>

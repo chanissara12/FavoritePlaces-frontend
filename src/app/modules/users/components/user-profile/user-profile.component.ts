@@ -3,6 +3,7 @@ import { ModalComponent } from "../../../../shared/modal/modal.component";
 import { MatIconModule } from "@angular/material/icon";
 import { UserPlacesComponent } from "../../../places/components/user-places/user-places.component";
 import { Router } from '@angular/router';
+import { UsersService } from '../../services/users.service';
 
 @Component({
   selector: 'app-user-profile',
@@ -13,6 +14,8 @@ import { Router } from '@angular/router';
 })
 export class UserProfileComponent {
   private router = inject(Router);
+  private usersService = inject(UsersService);
+  currentUser = this.usersService.currentUserData;
 
   onClose() {
     this.router.navigate([''], {

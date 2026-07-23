@@ -1,7 +1,9 @@
+@import "tailwindcss";
+
 div {
   display: flex;
   justify-content: flex-end;
-  align-items: start;
+  align-items: center;
 }
 
 a {

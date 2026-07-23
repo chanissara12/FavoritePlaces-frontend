@@ -1,11 +1,12 @@
 import { inject, Injectable, signal } from '@angular/core';
 
-import { Place, PlaceComment } from '../models/place.model';
+import { PlacesViewModel, PlaceComment } from '../models/place.model';
 import { HttpClient, HttpContext } from '@angular/common/http';
-import { catchError, map, tap, throwError } from 'rxjs';
+import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { ErrorService } from '../../../shared/error.service';
 import { UsersService } from '../../users/services/users.service';
 import { environment } from '../../../../environments/environment.development';
+import { getErrorMessages } from '../../../shared/utils/get-error-messages';
 
 @Injectable({
   providedIn: 'root',
@@ -15,8 +16,8 @@ export class PlacesService {
   private httpClient = inject(HttpClient);
   private usersService = inject(UsersService);
   private url = environment.urlApi + 'places/';
-  private places = signal<Place[]>([]);
-  private userPlaces = signal<Place[]>([]);
+  private places = signal<PlacesViewModel[]>([]);
+  private userPlaces = signal<PlacesViewModel[]>([]);
   private placesComments = signal<PlaceComment[]>([]);
   currentUser = this.usersService.currentUserData;
 
@@ -24,9 +25,15 @@ export class PlacesService {
   loadedUserPlaces = this.userPlaces.asReadonly();
   loadedPlacesComments = this.placesComments.asReadonly();
 
-  loadAvailablePlaces() {
+  public loadAvailablePlaces(): Observable<PlacesViewModel[]> {
+    let availablePlacesUrl: string;
+    if (this.currentUser != null) {
+      availablePlacesUrl = this.url + 'GetAvailablePlaces?userId=' + this.currentUser().userId
+    } else {
+      availablePlacesUrl = this.url + 'GetAvailablePlaces'
+    }
     return this.fetchPlaces(
-      this.url + 'available-places',
+      availablePlacesUrl,
       'Some thing went wrong fetching the available places. Please try again later.'
     )
       .pipe(
@@ -36,9 +43,9 @@ export class PlacesService {
       );
   }
 
-  loadUserPlaces() {
+  public loadUserPlaces(): Observable<PlacesViewModel[]> {
     return this.fetchPlaces(
-      this.url + 'user-places?userId=' + this.currentUser().userId,
+      this.url + 'GetUserPlaces?userId=' + this.currentUser().userId,
       'Please Login to see your favorite places.'
     ).pipe(
       tap({
@@ -71,7 +78,7 @@ export class PlacesService {
     // )
   }
 
-  addPlaceToUserPlaces(place: Place) {
+  addPlaceToUserPlaces(place: PlacesViewModel) {
     const prevPlaces = this.userPlaces();
     // this.userPlaces.update(prevPlaces => [...prevPlaces, place]);
 
@@ -96,7 +103,7 @@ export class PlacesService {
     )
   }
 
-  removeUserPlace(place: Place) {
+  removeUserPlace(place: PlacesViewModel) {
     const prevPlaces = this.userPlaces();
 
     if (prevPlaces.some((p) => p.placeId === place.placeId)) {
@@ -117,8 +124,9 @@ export class PlacesService {
     return this.httpClient.post(this.url + 'user-places/approve-place', placeId)
       .pipe(
         catchError(error => {
-          this.errorService.showError(error.error);
-          return throwError(() => new Error(error.error))
+          let errorMessages = getErrorMessages(error)
+          this.errorService.showError(errorMessages);
+          return throwError(() => new Error(errorMessages))
         })
       )
   }
@@ -127,8 +135,9 @@ export class PlacesService {
     return this.httpClient.post(this.url + 'new-place', data)
       .pipe(
         catchError(error => {
-          this.errorService.showError(error.error);
-          return throwError(() => new Error(error.error))
+          let errorMessages = getErrorMessages(error)
+          this.errorService.showError(errorMessages);
+          return throwError(() => new Error(errorMessages))
         })
       )
   }
@@ -137,15 +146,16 @@ export class PlacesService {
     return this.httpClient.post(this.url + 'delete-place', placeId)
       .pipe(
         catchError(error => {
-          this.errorService.showError(error.error);
-          return throwError(() => new Error(error.error))
+          let errorMessages = getErrorMessages(error)
+          this.errorService.showError(errorMessages);
+          return throwError(() => new Error(errorMessages))
         })
       )
   }
 
   private fetchPlaces(url: string, errorMessage: string) {
     return this.httpClient
-      .get<{ places: Place[] }>(url)
+      .get<{ places: PlacesViewModel[] }>(url)
       .pipe(
         map((resData) => resData.places),
         catchError((error) =>

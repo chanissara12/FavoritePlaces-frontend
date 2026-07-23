@@ -1,11 +1,17 @@
-export interface Place {
+export interface PlacesViewModel {
   placeId: number;
   title: string;
   imgSrc: string;
   imgAlt: string;
   addBy: string;
   isApproved: string;
-  uploadedUser: number;
+  isDeleted: string;
+  uploadedUserId: number;
+  uploadedUserName: string;
+  isFav: boolean;
+  hasComment: boolean;
+  commentCount: number;
+  allowDelete: boolean;
 }
 
 export interface PlaceComment {

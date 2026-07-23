@@ -2,7 +2,7 @@ import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 
 import { PlacesContainerComponent } from '../places-container/places-container.component';
 import { PlacesComponent } from '../../pages/places/places.component';
-import { Place } from '../../models/place.model';
+import { PlacesViewModel } from '../../models/place.model';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, throwError } from 'rxjs';
 import { PlacesService } from '../../services/places.service';
@@ -43,7 +43,7 @@ export class UserPlacesComponent implements OnInit {
     })
   }
 
-  onRemovePlace(selectedPlace: Place) {
+  onRemovePlace(selectedPlace: PlacesViewModel) {
     const subscription = this.placesService.removeUserPlace(selectedPlace).subscribe()
 
     this.destroyRef.onDestroy(() => {

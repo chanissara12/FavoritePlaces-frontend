@@ -1,12 +1,12 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 
-import { Place } from '../../models/place.model';
+import { PlacesViewModel } from '../../models/place.model';
 import { PlacesComponent } from '../../pages/places/places.component';
 import { PlacesContainerComponent } from '../places-container/places-container.component';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, throwError } from 'rxjs';
 import { PlacesService } from '../../services/places.service';
-import { RouterLink } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { UsersService } from '../../../users/services/users.service';
 
 @Component({
@@ -17,13 +17,15 @@ import { UsersService } from '../../../users/services/users.service';
   imports: [PlacesComponent, PlacesContainerComponent, RouterLink],
 })
 export class AvailablePlacesComponent implements OnInit {
-  places = signal<Place[] | undefined>(undefined);
+  // places = signal<PlacesViewModel[] | undefined>(undefined);
   isFetching = signal(false);
   error = signal('');
   private placesService = inject(PlacesService);
   private usersService = inject(UsersService);
   private httpClient = inject(HttpClient);
   private destroyRef = inject(DestroyRef);
+  private router = inject(Router);
+  places = this.placesService.loadedAvailablePlaces;
   userPlaces = this.placesService.loadedUserPlaces;
   currentUser = this.usersService.currentUserData;
   // currentUserRole = this.usersService.currentUserRoleData;
@@ -36,7 +38,6 @@ export class AvailablePlacesComponent implements OnInit {
     const subscription =
       this.placesService.loadAvailablePlaces()
         .subscribe({
-          next: (places) => this.places.set(places),
           complete: () => {
             this.isFetching.set(false);
           },
@@ -51,25 +52,31 @@ export class AvailablePlacesComponent implements OnInit {
     })
   }
 
-  onAddPlace(selectedPlace: Place) {
+  onAddFavPlace(selectedPlace: PlacesViewModel) {
     if (!this.userPlaces()?.find((p) => p.placeId === selectedPlace.placeId)) {
       const subscription = this.placesService.addPlaceToUserPlaces(selectedPlace)
         .subscribe({
-          next: (resData) => console.log(resData)
+          next: () => this.placesService.loadAvailablePlaces()
+            .subscribe()
         })
-
       this.destroyRef.onDestroy(() => {
         subscription.unsubscribe();
       })
     }
   }
 
+  onRemoveFavPlace(selectedPlace: PlacesViewModel) {
+    const subscription = this.placesService.removeUserPlace(selectedPlace).subscribe()
+
+    this.destroyRef.onDestroy(() => {
+      subscription.unsubscribe();
+    })
+  }
+
   onDeletePlace(placeId: number) {
     const subscription = this.placesService.deletePlace(placeId).subscribe({
       next: () => {
-        this.placesService.loadAvailablePlaces().subscribe({
-          next: (places) => this.places.set(places),
-        });
+        this.placesService.loadAvailablePlaces().subscribe();
       }
     })
   }
