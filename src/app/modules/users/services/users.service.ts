@@ -1,8 +1,8 @@
 import { inject, Injectable, signal } from "@angular/core";
 import { User } from "../models/users.model";
 import { HttpClient } from "@angular/common/http";
-import { ErrorService } from "../../../shared/error.service";
-import { catchError, map, tap, throwError } from "rxjs";
+import { ErrorService } from "../../../shared/services/error.service";
+import { catchError, map, Observable, tap, throwError } from "rxjs";
 import { environment } from "../../../../environments/environment.development";
 import { getErrorMessages } from "../../../shared/utils/get-error-messages";
 
@@ -15,16 +15,15 @@ export class UsersService {
         userName: "",
         roles: []
     });
-    // private currentUserRole = signal<string[]>([]);
-    isLoggedIn = signal(false);
+    isLoggedIn = signal<boolean>(false);
+    
     private httpClient = inject(HttpClient);
     private errorService = inject(ErrorService);
-    private url = environment.urlApi + 'users/';
+    private url: string = environment.urlApi + 'users/';
 
     currentUserData = this.currentUser.asReadonly();
-    // currentUserRoleData = this.currentUserRole.asReadonly();
 
-    UserLogin(userName: string, password: string) {
+    public UserLogin(userName: string, password: string): Observable<Object> {
         return this.httpClient.post<{ currentUser: User }>(this.url + 'login', {
             userName: userName,
             password: password
@@ -35,14 +34,14 @@ export class UsersService {
                 }
             }),
             catchError(error => {
-                let errorMessages = getErrorMessages(error)
+                let errorMessages: string = getErrorMessages(error)
                 this.errorService.showError(errorMessages);
                 return throwError(() => new Error(errorMessages))
             })
         )
     }
 
-    UserRegister(userName: string, password: string) {
+    public UserRegister(userName: string, password: string): Observable<Object> {
         return this.httpClient.post<{ currentUser: User }>(this.url + 'register', {
             userName: userName,
             password: password
@@ -53,14 +52,14 @@ export class UsersService {
                 }
             }),
             catchError(error => {
-                let errorMessages = getErrorMessages(error)
+                let errorMessages: string = getErrorMessages(error)
                 this.errorService.showError(errorMessages);
                 return throwError(() => new Error(errorMessages))
             })
         )
     }
 
-    UserLogout() {
+    public UserLogout(): void {
         this.currentUser.set({
             userId: 0,
             userName: "",

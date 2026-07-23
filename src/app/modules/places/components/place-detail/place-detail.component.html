@@ -11,7 +11,10 @@
     <div class="m-8">
         <h2 class="font-bold text-2xl mb-4">Comments</h2>
         <ul>
-            @for (comment of thisPlaceComments; track comment.userId) {
+            <!-- @if (isLoggedIn()) { -->
+                <button routerLink="" class="flex justify-end">Add Comment</button>
+            <!-- } -->
+            @for (comment of placeComments(); track comment.userId) {
             <li class=" grid grid-cols-[30px_1fr] border border-slate-500 rounded-2xl p-4 mb-4">
                 <mat-icon>account_circle</mat-icon>
                 <h3>{{ comment.userName }}</h3>
@@ -22,5 +25,4 @@
             }
         </ul>
     </div>
-
 </app-modal>

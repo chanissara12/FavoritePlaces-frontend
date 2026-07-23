@@ -13,22 +13,22 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './login.component.css'
 })
 export class LoginComponent {
-  enteredUserName = signal('');
-  enteredPassword = signal('');
+  enteredUserName = signal<string>('');
+  enteredPassword = signal<string>('');
   private usersService = inject(UsersService);
   private router = inject(Router);
 
-  onClose() {
+  public onClose(): void {
     this.router.navigate([''], {
       replaceUrl: true
     })
   }
 
-  onSubmit(formData: NgForm) {
+  public async onSubmit(formData: NgForm): Promise<void> {
     if (formData.form.invalid) {
       return;
     }
-    this.usersService.UserLogin(this.enteredUserName(), this.enteredPassword()).subscribe({
+    await this.usersService.UserLogin(this.enteredUserName(), this.enteredPassword()).subscribe({
       next: (user) => {
         this.usersService.isLoggedIn.set(true);
 

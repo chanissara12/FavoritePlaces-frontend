@@ -16,7 +16,6 @@
                 <td>{{ place.imgAlt }}</td>
                 <td>
                     <img [src]="place.imgSrc" alt="" width="400" height="300">
-                    <!-- {{ place.img_src }} -->
                 </td>
                 <td>
                     <button (click)="approvePlace(place.placeId)">approve</button>
@@ -25,15 +24,8 @@
             }
         </table>
 
-        <!-- @if(imagePreview) {
-            <img [src]="imagePreview" alt="" width="400px" height="300px">
-        } -->
-
-        <!-- <p class="actions"><a routerLink="/register">Register</a></p> -->
-
         <p class="actions">
             <a routerLink="../">Ok</a>
-            <!-- <button type="submit">Submit</button> -->
         </p>
     </div>
 </app-modal>

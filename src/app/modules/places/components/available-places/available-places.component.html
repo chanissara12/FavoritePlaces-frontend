@@ -1,29 +1,29 @@
 <app-places-container title="Available Places">
-  @if (currentUser().roles.length > 0) {
-    <div>
-    <button routerLink="/new-place">Add new place</button>
-  </div>
-  }
-  @if (currentUser().roles.includes('admin')) {
-    <div>
-    <button routerLink="/approve-places">Approve places</button>
-  </div>
-  }
-  @if (isFetching() && !error()) {
-    <p class="fallback-text">Fetching available places...</p>
-  }
+    <!-- @if(showConfirm()) { -->
 
-  @if (error()) {
+    <!-- } -->
+    @if (currentUser().roles.length > 0) {
+    <div>
+        <button routerLink="/new-place">Add new place</button>
+    </div>
+    }
+    @if (currentUser().roles.includes('admin')) {
+    <div>
+        <button routerLink="/approve-places">Approve places</button>
+    </div>
+    }
+    @if (isFetching() && !error()) {
+    <p class="fallback-text">Fetching available places...</p>
+    }
+
+    @if (error()) {
     <p class="fallback-text">{{ error() }}</p>
-  }
-  @if (places()) {
-  <app-places 
-    [places]="places()!" 
-    [isAvailablePlaces]="true" 
-    (addFavPlace)="onAddFavPlace($event)" 
-    (removeFavPlace)="onRemoveFavPlace($event)" 
-    (deletePlace)="onDeletePlace($event)"/>
-  } @else if (places()?.length === 0) {
-  <p class="fallback-text">Unfortunately, no places could be found.</p>
-  }
+    }
+    @if (places()) {
+    <app-places [places]="places()!" [isAvailablePlaces]="true"
+        (addFavPlace)="onAddFavPlace($event.placeId, $event.userId)" />
+    } @else if (places().length === 0) {
+    <p class="fallback-text">Unfortunately, no places could be found.</p>
+    }
+
 </app-places-container>

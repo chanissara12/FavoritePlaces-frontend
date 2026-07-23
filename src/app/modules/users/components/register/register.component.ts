@@ -2,7 +2,7 @@ import { Component, inject, signal } from '@angular/core';
 import { UsersService } from '../../services/users.service';
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from "../../../../shared/modal/modal.component";
-import { ErrorService } from '../../../../shared/error.service';
+import { ErrorService } from '../../../../shared/services/error.service';
 import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -14,22 +14,23 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
-  enteredUserName = signal('');
-  enteredPassword = signal('');
-  enteredConfirmPassword = signal('');
+  enteredUserName = signal<string>('');
+  enteredPassword = signal<string>('');
+  enteredConfirmPassword = signal<string>('');
+  
   private usersService = inject(UsersService);
   private errorService = inject(ErrorService);
   private router = inject(Router);
 
-  onClose() {
+  public onClose(): void {
     this.router.navigate([''], {
       replaceUrl: true
     })
   }
 
-  onSubmit() {
+  public async onSubmit(): Promise<void> {
     if (this.enteredPassword() === this.enteredConfirmPassword()) {
-      this.usersService.UserRegister(this.enteredUserName(), this.enteredPassword()).subscribe({
+      await this.usersService.UserRegister(this.enteredUserName(), this.enteredPassword()).subscribe({
         next: (user) => {
           this.usersService.isLoggedIn.set(true);
 

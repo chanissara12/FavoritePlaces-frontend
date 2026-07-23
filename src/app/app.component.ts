@@ -1,7 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Signal, signal } from '@angular/core';
 import { RouterOutlet } from "@angular/router";
 import { ErrorModalComponent } from "./shared/modal/error-modal/error-modal.component";
-import { ErrorService } from './shared/error.service';
+import { ErrorService } from './shared/services/error.service';
 
 @Component({
   selector: 'app-root',
@@ -13,5 +13,5 @@ import { ErrorService } from './shared/error.service';
 export class AppComponent {
   private errorService = inject(ErrorService);
   
-  error = this.errorService.error;
+  error: Signal<string> = this.errorService.error;
 }

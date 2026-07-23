@@ -1,74 +1,43 @@
-import { Component, computed, inject, input, output, signal } from '@angular/core';
+import { Component, DestroyRef, inject, input, output, viewChild } from '@angular/core';
 
-import { PlacesViewModel, PlaceComment } from '../../models/place.model';
-import { Router, RouterLink } from '@angular/router';
+import { PlacesViewModel } from '../../models/place.model';
+import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { UsersService } from '../../../users/services/users.service';
-import { PlacesService } from '../../services/places.service';
+import { ConfirmUnfavoriteModalComponent } from "../../../../shared/modal/confirm-unfavorite-modal/confirm-unfavorite-modal.component";
+import { ConfirmDeletePlaceModalComponent } from "../../../../shared/modal/confirm-delete-place-modal/confirm-delete-place-modal.component";
+import { User } from '../../../users/models/users.model';
 
 @Component({
   selector: 'app-places',
   standalone: true,
-  imports: [RouterLink, MatIconModule],
+  imports: [RouterLink, MatIconModule, ConfirmUnfavoriteModalComponent, ConfirmDeletePlaceModalComponent],
   templateUrl: './places.component.html',
   styleUrl: './places.component.css',
 })
 export class PlacesComponent {
   places = input.required<PlacesViewModel[]>();
   isAvailablePlaces = input<boolean>(false);
-  // userPlaces = input.required<Place[] | undefined>();
-  addFavPlace = output<PlacesViewModel>();
-  removeFavPlace = output<PlacesViewModel>();
-  deletePlace = output<number>();
+  addFavPlace = output<{placeId: number, userId: number}>();
+
+  dialogUnfavorite = viewChild<ConfirmUnfavoriteModalComponent>('dialogUnfavorite');
+  dialogDeletePlace = viewChild<ConfirmDeletePlaceModalComponent>('dialogDeletePlace');
+
   private usersService = inject(UsersService);
-  private placesService = inject(PlacesService);
-  private router = inject(Router);
-  currentUser = this.usersService.currentUserData();
-  isAdmin = this.currentUser.roles.includes('admin');
-  userFavoritePlaces = signal<PlacesViewModel[]>([]);
-  // comments = this.placesService.loadedPlacesComments;
 
-  ngOnInit() {
-    if (this.usersService.isLoggedIn()) {
-      this.placesService.loadUserPlaces().subscribe({
-        next: (userPlaces) => this.userFavoritePlaces.set(userPlaces),
-      });
-    }
-    this.placesService.loadPlacesComments().subscribe();
+  currentUser: User = this.usersService.currentUserData();
+  isAdmin: boolean = this.currentUser.roles.includes('admin');
+
+  public onAddFavPlace(placeId: number, userId: number): void {
+    this.addFavPlace.emit({placeId: placeId, userId: userId});
   }
 
-  // commentCount = computed(() => {
-  //   const counts = new Map<number, number>(); //สร้าง map เก็บ placeId และจำนวน comment
-
-  //   //ใช้ forEach เพื่อวนลูป comment และนับจำนวนเก็บไว้ใน map
-  //   this.comments().forEach((comment) => {
-  //     counts.set(comment.placeId, (counts.get(comment.placeId) || 0) + 1);
-  //   });
-
-  //   return counts
-  // })
-
-  // isFavorite(placeId: number) {
-  //   return this.userFavoritePlaces().some(x => x.placeId === placeId);
-  // }
-
-  // favoritePlaceIds = computed(() =>
-  //   new Set(this.userFavoritePlaces().map(x => x.placeId))
-  // );
-
-  onSelectPlace(place: PlacesViewModel) {
-    // this.selectPlace.emit(place);
+  public onRemoveFavPlace(placeId: number, userId: number): void {
+    this.dialogUnfavorite()?.showDialog(placeId, userId)
   }
 
-  onAddFavPlace(place: PlacesViewModel) {
-    this.addFavPlace.emit(place);
+  public onDeletePlace(placeId: number) {
+    this.dialogDeletePlace()?.showDialog(placeId)
   }
 
-  onRemoveFavPlace(place: PlacesViewModel) {
-    this.removeFavPlace.emit(place);
-  }
-
-  onDeletePlace(placeId: number) {
-    this.deletePlace.emit(placeId);
-  }
 }

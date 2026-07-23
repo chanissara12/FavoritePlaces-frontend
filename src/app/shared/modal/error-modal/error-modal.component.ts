@@ -1,6 +1,6 @@
 import { Component, inject, input } from '@angular/core';
 import { ModalComponent } from "../modal.component";
-import { ErrorService } from '../../error.service';
+import { ErrorService } from '../../services/error.service';
 
 @Component({
     selector: 'app-error-modal',
@@ -14,7 +14,7 @@ export class ErrorModalComponent {
   message = input<string>();
   private errorService = inject(ErrorService);
 
-  onClearError() {
+  public onClearError(): void {
     this.errorService.clearError();
   }
 }

@@ -5,10 +5,10 @@
             <div class="actions">
                 @if (place.isFav) {
                 <mat-icon class="btn add-btn stroke-red-400" title="Remove from favorites"
-                    (click)="onRemoveFavPlace(place)">favorite</mat-icon>
+                    (click)="onRemoveFavPlace(place.placeId, currentUser.userId)">favorite</mat-icon>
                 } @else {
                 <mat-icon class="btn add-btn" title="Add to favorites"
-                    (click)="onAddFavPlace(place)">favorite_border</mat-icon>
+                    (click)="onAddFavPlace(place.placeId, currentUser.userId)">favorite_border</mat-icon>
                 }
                 @if (isAdmin && isAvailablePlaces()) {
                 <mat-icon class="btn delete-btn" title="Delete this place"
@@ -19,7 +19,6 @@
                 <mat-icon>
                     comment
                 </mat-icon>
-                <!-- ({{ commentCount().get(place.placeId) || 0 }}) -->
                   {{ place.commentCount || 0 }}
             </button>
 
@@ -35,6 +34,7 @@
         </div>
 
     </li>
-    <!-- <mat-icon>account_circle</mat-icon> -->
     }
 </ul>
+<app-confirm-unfavorite-modal #dialogUnfavorite title="Do you confirm to remove place from favorite" [message]="" />
+<app-confirm-delete-place-modal #dialogDeletePlace title="Do you confirm to delete place" [message]="" />
