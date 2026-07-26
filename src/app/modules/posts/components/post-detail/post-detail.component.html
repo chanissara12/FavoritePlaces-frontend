@@ -1,17 +1,20 @@
 <app-modal>
     <div class="flex flex-col justify-center items-center m-8">
         <app-close-btn />
-        <h2 class="font-bold text-2xl m-2">{{ place?.title }}</h2>
-        <img class="m-2" [src]="place?.imgSrc" [alt]="place?.imgAlt">
-        <p class="m-2">{{ place?.imgAlt }}</p>
+        <h2 class="font-bold text-2xl m-2">{{ post?.title }}</h2>
+        <img class="m-2" [src]="post?.imgSrc" [alt]="post?.imgAlt">
+        <p class="m-2">{{ post?.imgAlt }}</p>
+
     </div>
     <div class="m-8">
         <h2 class="font-bold text-2xl mb-4">Comments</h2>
         <ul>
             <!-- @if (isLoggedIn()) { -->
-            <button class="flex justify-end border-2 rounded-2xl p-2" (click)="showAddComment()">Add Comment
-                <mat-icon>add_comment</mat-icon>
-            </button>
+            <div class="flex justify-end">
+                <button class="border-2 rounded-2xl p-2" (click)="showAddComment()">Add Comment
+                    <mat-icon>add_comment</mat-icon>
+                </button>
+            </div>
             <!-- } -->
             @if (opening) {
             <div class="mb-4">
@@ -22,7 +25,7 @@
                 </button>
             </div>
             }
-            @for (comment of placeComments(); track comment.userId) {
+            @for (comment of postComments(); track comment.userId) {
             <li class=" grid grid-cols-[30px_1fr] border border-slate-500 rounded-2xl p-4 mb-4">
                 <mat-icon>account_circle</mat-icon>
                 <h3>{{ comment.userName }}</h3>

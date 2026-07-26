@@ -1,8 +1,6 @@
 <app-modal>
     <div class="container">
-        <button class="close-btn" (click)="onClose()">
-             <mat-icon>close</mat-icon>
-        </button>
+        <app-close-btn />
         <h2>Login</h2>
         <form #form="ngForm" (ngSubmit)="onSubmit(form)">
             <p>

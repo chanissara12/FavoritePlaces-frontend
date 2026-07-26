@@ -1,8 +1,6 @@
 <app-modal>
     <div class="">
-        <button class="close-btn" (click)="onClose()">
-             <mat-icon>close</mat-icon>
-        </button>
+        <app-close-btn />
         <div class="flex flex-col justify-center items-center mt-20">
             <mat-icon class="text-[80px]! w-20! h-20!">account_circle</mat-icon>
             <div class="font-extrabold text-4xl">{{ currentUser().userName }}</div>

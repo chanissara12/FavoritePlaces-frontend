@@ -5,11 +5,12 @@ import { UserPlacesComponent } from "../../../places/components/user-places/user
 import { Router } from '@angular/router';
 import { UsersService } from '../../services/users.service';
 import { User } from '../../models/users.model';
+import { CloseBtnComponent } from "../../../../shared/buttons/close-btn/close-btn.component";
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [ModalComponent, MatIconModule, UserPlacesComponent],
+  imports: [ModalComponent, MatIconModule, UserPlacesComponent, CloseBtnComponent],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
 })

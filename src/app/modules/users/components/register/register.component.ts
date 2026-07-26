@@ -5,11 +5,12 @@ import { ModalComponent } from "../../../../shared/modal/modal.component";
 import { ErrorService } from '../../../../shared/services/error.service';
 import { Router, RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { CloseBtnComponent } from "../../../../shared/buttons/close-btn/close-btn.component";
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [FormsModule, ModalComponent, RouterLink, MatIconModule],
+  imports: [FormsModule, ModalComponent, RouterLink, MatIconModule, CloseBtnComponent],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })

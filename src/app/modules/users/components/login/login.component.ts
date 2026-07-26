@@ -4,11 +4,12 @@ import { Router, RouterLink } from '@angular/router';
 import { UsersService } from '../../services/users.service';
 import { ModalComponent } from "../../../../shared/modal/modal.component";
 import { MatIconModule } from '@angular/material/icon';
+import { CloseBtnComponent } from "../../../../shared/buttons/close-btn/close-btn.component";
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, RouterLink, ModalComponent, MatIconModule],
+  imports: [FormsModule, RouterLink, ModalComponent, MatIconModule, CloseBtnComponent],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })

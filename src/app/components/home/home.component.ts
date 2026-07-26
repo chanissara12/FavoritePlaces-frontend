@@ -5,16 +5,18 @@ import { UsersService } from '../../modules/users/services/users.service';
 import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { User } from '../../modules/users/models/users.model';
+import { FeedComponent } from "../../modules/posts/components/feed/feed.component";
 
 @Component({
     selector: 'app-home',
     standalone: true,
     imports: [
-        AvailablePlacesComponent,
-        HeaderComponent,
-        RouterLink,
-        MatIconModule
-    ],
+    AvailablePlacesComponent,
+    HeaderComponent,
+    RouterLink,
+    MatIconModule,
+    FeedComponent
+],
     templateUrl: './home.component.html',
     styleUrl: './home.component.css'
 })

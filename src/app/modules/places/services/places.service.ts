@@ -56,13 +56,13 @@ export class PlacesService {
 
   public loadUnapprovePlaces(): Observable<PlacesViewModel[]> {
     return this.fetchPlaces(
-      this.url + 'unapprove-places',
+      this.url + 'GetUnapprovePlaces',
       'Some thing went wrong fetching the available places. Please try again later.'
     );
   }
 
   public loadPlacesComments(placeId: number): Observable<PlaceComment[]> {
-    return this.httpClient.get<{ comments: PlaceComment[] }>(this.url + 'places-comments?placeId='+ placeId)
+    return this.httpClient.get<{ comments: PlaceComment[] }>(this.url + 'GetPlaceComments?placeId='+ placeId)
       .pipe(
         map((resData) => resData.comments),
         catchError((error) =>
@@ -78,7 +78,7 @@ export class PlacesService {
       return throwError(() => new Error('Please login to save your favorite places.'))
     }
 
-    return this.httpClient.post(this.url + 'user-places/post', {
+    return this.httpClient.post(this.url + 'PostUserPlaces', {
       userId: userId,
       placeId: placeId
     }).pipe(
@@ -97,7 +97,7 @@ export class PlacesService {
       this.userPlaces.set(prevPlaces.filter(p => p.placeId !== placeId));
     }
 
-    return this.httpClient.delete(this.url + 'user-places/delete?userId=' + userId + '&placeId=' + placeId)
+    return this.httpClient.delete(this.url + 'DeleteUserPlaces?userId=' + userId + '&placeId=' + placeId)
       .pipe(
         catchError(error => {
           this.userPlaces.set(prevPlaces);
@@ -108,7 +108,7 @@ export class PlacesService {
   }
 
   public approveUserPlaces(placeId: number): Observable<Object> {
-    return this.httpClient.post(this.url + 'user-places/approve-place', placeId)
+    return this.httpClient.post(this.url + 'ApproveUserPlaces', placeId)
       .pipe(
         catchError(error => {
           let errorMessages: string = getErrorMessages(error)
@@ -119,7 +119,23 @@ export class PlacesService {
   }
 
   public addNewPlaces(data: FormData): Observable<Object> {
-    return this.httpClient.post(this.url + 'new-place', data)
+    return this.httpClient.post(this.url + 'PostNewPlaces', data)
+      .pipe(
+        catchError(error => {
+          let errorMessages: string = getErrorMessages(error)
+          this.errorService.showError(errorMessages);
+          return throwError(() => new Error(errorMessages))
+        })
+      )
+  }
+
+  public addNewComment(placeId: number, userId: number, rating: number, comment: string): Observable<Object> {
+    return this.httpClient.post(this.url + 'PostUserComment', {
+      placeId: placeId,
+      userId: userId,
+      rating: rating,
+      comment: comment
+    })
       .pipe(
         catchError(error => {
           let errorMessages: string = getErrorMessages(error)
@@ -130,7 +146,7 @@ export class PlacesService {
   }
 
   public deletePlace(placeId: number): Observable<Object> {
-    return this.httpClient.post(this.url + 'delete-place', placeId)
+    return this.httpClient.post(this.url + 'DeletePlace', placeId)
       .pipe(
         catchError(error => {
           let errorMessages: string = getErrorMessages(error)

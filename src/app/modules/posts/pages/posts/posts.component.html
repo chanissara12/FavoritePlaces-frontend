@@ -1,0 +1,51 @@
+<ul>
+    @for (post of posts(); track post.postId) {
+    <li class="post-item">
+        <div class="relative">
+            <!-- <div class="actions">
+                @if (post.isFav) {
+                <mat-icon class="btn add-btn stroke-red-400" title="Remove from favorites"
+                    (click)="onRemoveFavPost(post.postId, currentUser.userId)">favorite</mat-icon>
+                } @else {
+                <mat-icon class="btn add-btn" title="Add to favorites"
+                    (click)="onAddFavPost(post.postId, currentUser.userId)">favorite_border</mat-icon>
+                }
+            </div> -->
+            <div class="flex flex-row">
+                <mat-icon>account_circle</mat-icon>
+                <p>{{ post.uploadedUserName }}</p>
+            </div>
+            <div>{{ post.imgAlt }}</div>
+            <p class="btn favorite-count">
+                @if (post.isFav) {
+                <mat-icon title="Remove from favorites"
+                    (click)="onRemoveFavPost(post.postId, currentUser.userId)">favorite
+                </mat-icon>
+                {{ post.favCount || 0 }}
+                } @else {
+                <mat-icon title="Add to favorites"
+                    (click)="onAddFavPost(post.postId, currentUser.userId)">favorite_border
+                </mat-icon>
+                {{ post.favCount || 0 }}
+                }
+            </p>
+            <p class="btn comment-count">
+                <mat-icon>
+                    comment
+                </mat-icon>
+                {{ post.commentCount || 0 }}
+            </p>
+
+            <button [routerLink]="['/post-detail', post.postId]">
+                <img [src]="post.imgSrc" [alt]="post.imgAlt" />
+            </button>
+            <h3>{{ post.title }}</h3>
+        </div>
+
+
+
+    </li>
+    }
+</ul>
+<app-confirm-unfavorite-post-modal #dialogUnfavorite title="Do you confirm to remove place from favorite"
+    [message]="" />

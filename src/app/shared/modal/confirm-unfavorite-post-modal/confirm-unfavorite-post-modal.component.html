@@ -1,0 +1,13 @@
+@if (opening) {
+<app-modal>
+  <div class="error">
+    <h2>{{ title() }}</h2>
+    <p>{{ message() }}</p>
+
+    <div class="confirmation-actions">
+      <button class="button" (click)="onCancel()">Cancel</button>
+      <button class="button" (click)="onComfirm()">Confirm</button>
+    </div>
+  </div>
+</app-modal>
+}

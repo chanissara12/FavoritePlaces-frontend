@@ -3,17 +3,6 @@ h2 {
   margin-bottom: 0;
 }
 
-.close-btn {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
-  padding-top: 0.25rem;
-}
-
 .container {
   display: flex;
   flex-direction: column;

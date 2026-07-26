@@ -1,0 +1,22 @@
+<app-places-container title="Feed">
+    <!-- @if (currentUser().roles.length > 0) { -->
+    <div>
+        <button routerLink="/new-post">Add new post</button>
+    </div>
+    <!-- } -->
+
+    @if (isFetching() && !error()) {
+    <p class="fallback-text">Fetching posts...</p>
+    }
+
+    @if (error()) {
+    <p class="fallback-text">{{ error() }}</p>
+    }
+    @if (posts()) {
+    <app-posts [posts]="posts()!"
+        (addFavPlace)="onAddFavPlace($event.postId, $event.userId)" />
+    } @else if (posts().length === 0) {
+    <p class="fallback-text">Unfortunately, no posts could be found.</p>
+    }
+
+</app-places-container>
