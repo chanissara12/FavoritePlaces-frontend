@@ -1,25 +1,30 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, Signal, signal } from '@angular/core';
 import { ModalComponent } from "../../../../shared/modal/modal.component";
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CloseBtnComponent } from "../../../../shared/buttons/close-btn/close-btn.component";
+import { MatIconModule } from "@angular/material/icon";
+import { User } from '../../../users/models/users.model';
+import { UsersService } from '../../../users/services/users.service';
+import { PostsService } from '../../services/posts.service';
 
 @Component({
   selector: 'app-new-post',
   standalone: true,
-  imports: [ModalComponent, FormsModule, RouterLink, CloseBtnComponent],
+  imports: [ModalComponent, FormsModule, RouterLink, CloseBtnComponent, MatIconModule],
   templateUrl: './new-post.component.html',
   styleUrl: './new-post.component.css'
 })
 export class NewPostComponent {
       enteredTitle = signal<string>('');
       enteredAlt = signal<string>('');
+      
+      private postsService = inject(PostsService);
+      private usersService = inject(UsersService);
+      private router = inject(Router);
+      currentUser: Signal<User> = this.usersService.currentUserData;
       imagePreview: string | null = null;
       selectedFile: File | null = null;
-      // private placesService = inject(PlacesService);
-      // private usersService = inject(UsersService);
-      // private router = inject(Router);
-      // currentUser: Signal<User> = this.usersService.currentUserData;
   
       public onSelectImage(event: Event): void {
           console.log(event);
@@ -39,37 +44,37 @@ export class NewPostComponent {
           }
       }
   
-      // public async onSubmit(): Promise<void> {
-      //     if (!this.selectedFile) {
-      //         return;
-      //     }
+      public async onSubmit(): Promise<void> {
+          if (!this.selectedFile) {
+              return;
+          }
   
-      //     const filename = this.enteredTitle().toLowerCase().replace(/\s+/g, '-')
+          const filename = this.enteredTitle().toLowerCase().replace(/\s+/g, '-')
   
-      //     const formData = new FormData();
+          const formData = new FormData();
   
-      //     formData.append('title', this.enteredTitle());
-      //     formData.append('alt', this.enteredAlt());
-      //     formData.append('formFile', this.selectedFile, filename);
-      //     if (this.currentUser().roles.includes('admin')) {
-      //         formData.append('add_by', 'admin');
-      //         formData.append('isApproved', 'Y');
-      //     } else {
-      //         formData.append('add_by', 'user');
-      //         formData.append('isApproved', 'N');
-      //     }
-      //     formData.append('uploaded_user_id', this.currentUser().userId.toString());
+          formData.append('title', this.enteredTitle());
+          formData.append('alt', this.enteredAlt());
+          formData.append('formFile', this.selectedFile, filename);
+        //   if (this.currentUser().roles.includes('admin')) {
+        //       formData.append('add_by', 'admin');
+        //       formData.append('isApproved', 'Y');
+        //   } else {
+        //       formData.append('add_by', 'user');
+        //       formData.append('isApproved', 'N');
+        //   }
+          formData.append('user_id', this.currentUser().userId.toString());
   
-      //     console.log(formData);
+          console.log(formData);
   
-      //     await this.placesService.addNewPlaces(formData).subscribe({
-      //         next: (place) => {
-      //             console.log(place);
+          await this.postsService.postNewPost(formData).subscribe({
+              next: (post) => {
+                  console.log(post);
   
-      //             this.router.navigate([''], {
-      //                 replaceUrl: true
-      //             })
-      //         }
-      //     })
-      // }
+                  this.router.navigate([''], {
+                      replaceUrl: true
+                  })
+              }
+          })
+      }
 }

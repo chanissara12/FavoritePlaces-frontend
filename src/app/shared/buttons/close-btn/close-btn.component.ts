@@ -13,7 +13,7 @@ export class CloseBtnComponent {
   private router = inject(Router);
   
   public onClose(): void {
-    this.router.navigate([''], {
+    this.router.navigate(['../'], {
       replaceUrl: true
     })
   }

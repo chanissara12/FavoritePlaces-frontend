@@ -7,11 +7,12 @@ import { PostsComponent } from "../../pages/posts/posts.component";
 import { PostsService } from '../../services/posts.service';
 import { PostViewModel } from '../../models/posts.model';
 import { RouterLink } from '@angular/router';
+import { NewPostComponent } from "../new-post/new-post.component";
 
 @Component({
     selector: 'app-feed',
     standalone: true,
-    imports: [PlacesContainerComponent, PostsComponent, RouterLink],
+    imports: [PlacesContainerComponent, PostsComponent, RouterLink, NewPostComponent],
     templateUrl: './feed.component.html',
     styleUrl: './feed.component.css'
 })
@@ -26,6 +27,7 @@ export class FeedComponent implements OnInit {
     posts: Signal<PostViewModel[]> = this.postsService.loadedPosts;
     // userPlaces: Signal<PlacesViewModel[]> = this.postsService.loadedUserPlaces;
     currentUser: Signal<User> = this.usersService.currentUserData;
+    isLoggedIn: Signal<boolean> = this.usersService.isLoggedIn;
 
     async ngOnInit(): Promise<void> {
         this.isFetching.set(true);
@@ -41,7 +43,7 @@ export class FeedComponent implements OnInit {
             });
     }
 
-    async onAddFavPlace(postId: number, userId: number): Promise<void> {
+    async onAddFavPost(postId: number, userId: number): Promise<void> {
         await this.postsService.favoritePost(postId, userId)
             .subscribe({
                 next: () => this.postsService.getPosts()

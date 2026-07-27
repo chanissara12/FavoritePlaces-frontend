@@ -1,0 +1,12 @@
+img {
+    width: 400px;
+    height: 100%;
+}
+
+.comments-container {
+    margin-bottom: 3rem;
+}
+
+ul {
+    list-style-type: none;
+}

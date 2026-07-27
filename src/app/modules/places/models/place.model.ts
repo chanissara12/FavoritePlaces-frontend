@@ -6,8 +6,8 @@ export interface PlacesViewModel {
   addBy: string;
   isApproved: string;
   isDeleted: string;
-  uploadedUserId: number;
-  uploadedUserName: string;
+  userId: number;
+  username: string;
   isFav: boolean;
   hasComment: boolean;
   commentCount: number;

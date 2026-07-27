@@ -1,22 +1,32 @@
 <app-places-container title="Feed">
-    <!-- @if (currentUser().roles.length > 0) { -->
-    <div>
-        <button routerLink="/new-post">Add new post</button>
+    @if (currentUser().roles.includes('admin')) {
+    <div class="flex justify-end">
+        <button routerLink="/promote-posts">Promote posts</button>
     </div>
-    <!-- } -->
-
-    @if (isFetching() && !error()) {
-    <p class="fallback-text">Fetching posts...</p>
     }
 
-    @if (error()) {
-    <p class="fallback-text">{{ error() }}</p>
-    }
-    @if (posts()) {
-    <app-posts [posts]="posts()!"
-        (addFavPlace)="onAddFavPlace($event.postId, $event.userId)" />
-    } @else if (posts().length === 0) {
-    <p class="fallback-text">Unfortunately, no posts could be found.</p>
-    }
+    <div class="m-16">
+        @if (isFetching() && !error()) {
+        <p class="fallback-text">Fetching posts...</p>
+        }
 
+        @if (error()) {
+        <p class="fallback-text">{{ error() }}</p>
+        }
+
+        @if (isLoggedIn()) {
+        <div class="bg-slate-600 mb-4 p-4 rounded-xl">
+            <p>
+                <textarea routerLink="/new-post" class="w-full border-2 rounded-xs" type="text" id="description"
+                    name="description" placeholder="Tell me what you think"></textarea>
+            </p>
+        </div>
+        }
+
+        @if (posts()) {
+        <app-posts [posts]="posts()!" (addFavPost)="onAddFavPost($event.postId, $event.userId)" />
+        } @else if (posts().length === 0) {
+        <p class="fallback-text">Unfortunately, no posts could be found.</p>
+        }
+    </div>
 </app-places-container>

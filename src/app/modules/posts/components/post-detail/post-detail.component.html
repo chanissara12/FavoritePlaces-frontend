@@ -9,29 +9,28 @@
     <div class="m-8">
         <h2 class="font-bold text-2xl mb-4">Comments</h2>
         <ul>
-            <!-- @if (isLoggedIn()) { -->
-            <div class="flex justify-end">
-                <button class="border-2 rounded-2xl p-2" (click)="showAddComment()">Add Comment
-                    <mat-icon>add_comment</mat-icon>
-                </button>
-            </div>
-            <!-- } -->
-            @if (opening) {
             <div class="mb-4">
-                <textarea class="w-full border-2 rounded-2xl p-4" type="text" id="comment" name="comment"
+                <textarea class="w-full border-2 rounded-2xl p-4" type="text" id="comment" name="comment" placeholder="Comment something..."
                     [(ngModel)]="enteredComment"></textarea>
-                <button class="border-2 rounded-2xl p-2" type="submit" (click)="submitComment()">Add Comment
-                    <mat-icon>send</mat-icon>
-                </button>
+                <div class="flex justify-end">
+                    <button class="flex border-2 rounded-2xl p-2 items-center" type="submit" (click)="submitComment()">Add Comment
+                        <mat-icon>send</mat-icon>
+                    </button>
+                </div>
             </div>
-            }
             @for (comment of postComments(); track comment.userId) {
-            <li class=" grid grid-cols-[30px_1fr] border border-slate-500 rounded-2xl p-4 mb-4">
-                <mat-icon>account_circle</mat-icon>
+            <li class=" grid grid-cols-[auto_1fr_auto_auto] border gap-2 items-center border-slate-500 rounded-2xl p-4 mb-4">
+                <mat-icon class="text-2xl! w-auto! h-auto!">account_circle</mat-icon>
                 <h3>{{ comment.userName }}</h3>
-                <mat-icon>star_border</mat-icon>
-                <p> {{ comment.rating }}</p>
-                <p class="col-span-2">{{ comment.comment }}</p>
+                @if (comment.userId == currentUserId) {
+                <button (click)="onEditComment()">
+                    <mat-icon class="text-2xl! w-auto! h-auto!">edit</mat-icon>
+                </button>
+                <button (click)="onDeleteComment(comment.postId)">
+                    <mat-icon class="text-2xl! w-auto! h-auto!">delete</mat-icon>
+                </button>
+                }
+                <p class="col-start-1 col-span-full">{{ comment.comment }}</p>
             </li>
             }
         </ul>

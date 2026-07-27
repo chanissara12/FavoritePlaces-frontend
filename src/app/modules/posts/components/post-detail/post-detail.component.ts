@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { CloseBtnComponent } from "../../../../shared/buttons/close-btn/close-btn.component";
 import { PostsService } from '../../services/posts.service';
+import { UsersService } from '../../../users/services/users.service';
 
 @Component({
   selector: 'app-post-detail',
@@ -20,14 +21,14 @@ export class PostDetailComponent {
   
       private postsService = inject(PostsService);
       // private placesService = inject(PlacesService);
-      // private usersService = inject(UsersService);
+      private usersService = inject(UsersService);
       private router = inject(Router);
   
       private _showAddComment: boolean = false;
       post: PostViewModel | undefined = undefined;
       postComments = signal<PostCommentViewModel[]>([]);
       // isLoggedIn: Signal<boolean> = this.usersService.isLoggedIn;
-      // currentUserId: number = this.usersService.currentUserData().userId; 
+      currentUserId: number = this.usersService.currentUserData().userId; 
   
       public get opening(): boolean {
           return this._showAddComment;
@@ -47,14 +48,22 @@ export class PostDetailComponent {
           })
       }
 
-      submitComment() {
+      public onEditComment(): void {
+        
+      }
+
+      public onDeleteComment(postId: number): void {
+        
+      }
+
+      public submitComment(): void {
         
       }
   
       async ngOnInit(): Promise<void> {
           this.post = await this.postsService.loadedPosts().find(post => post.postId == this.postId());
-        //   await this.placesService.loadPlacesComments(this.placeId())
-        //       .subscribe({ next: (resData) => this.placeComments.set(resData) })
+          await this.postsService.getPostComments(this.postId())
+              .subscribe({ next: (resData) => this.postComments.set(resData) })
       }
   
       // public async submitComment(): Promise<void> {

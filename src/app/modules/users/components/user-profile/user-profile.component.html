@@ -1,11 +1,11 @@
-<app-modal>
-    <div class="">
-        <app-close-btn />
-        <div class="flex flex-col justify-center items-center mt-20">
-            <mat-icon class="text-[80px]! w-20! h-20!">account_circle</mat-icon>
-            <div class="font-extrabold text-4xl">{{ currentUser().userName }}</div>
-        </div>
-        
-        <app-user-places />
+<div class="text-white">
+    <app-close-btn />
+    <div class="flex flex-col justify-center items-center mt-20">
+        <mat-icon class="text-[80px]! w-20! h-20!">account_circle</mat-icon>
+        <div class="font-extrabold text-4xl">{{ userName() }}</div>
     </div>
-</app-modal>
+
+    <div class="m-8">
+        <app-user-posts [userId]="userId()" />
+    </div>
+</div>

@@ -1,12 +1,12 @@
 export interface PostViewModel {
     postId: number;
-    uploadedUserId: number;
+    userId: number;
     title: string;
     imgSrc: string;
     imgAlt: string;
     isDeleted: string;
-    createAt: string;
-    uploadedUserName: string;
+    createAt: Date;
+    username: string;
     isFav: boolean;
     favCount: number;
     commentCount: number;

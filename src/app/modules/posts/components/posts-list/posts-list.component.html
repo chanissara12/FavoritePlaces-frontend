@@ -1,0 +1,61 @@
+<ul>
+    @for (post of posts(); track post.postId) {
+    <li class="post-item m-8 p-4 bg-gray-400">
+        <div class="relative">
+            <div class="flex flex-row">
+                <mat-icon>account_circle</mat-icon>
+                <p>{{ post.username }}</p>
+            </div>
+            <div>{{ post.imgAlt }}</div>
+            <p class="btn favorite-count">
+                <mat-icon title="Add to favorites">favorite
+                </mat-icon>
+                {{ post.favCount || 0 }}
+            </p>
+            <p class="btn comment-count">
+                <mat-icon>
+                    comment
+                </mat-icon>
+                {{ post.commentCount || 0 }}
+            </p>
+
+            <button [routerLink]="['/post-detail', post.postId]">
+                <img [src]="post.imgSrc" [alt]="post.imgAlt" />
+            </button>
+            <button class="promote-button" (click)="onPromotePost(post.postId)">
+                Promote
+            </button>
+            <!-- <h3>{{ post.title }}</h3> -->
+        </div>
+    </li>
+    }
+</ul>
+
+<app-confirm-promote-post-modal #dialogPromote title="Do you confirm to promote this post"
+    [message]="" />
+
+<!-- <ul>
+    @for (post of posts(); track post.postId) {
+    <li class="post-item">
+        <div class="relative">
+            <button class="btn comment-btn" title="Add a comment">
+                <mat-icon>
+                    comment
+                </mat-icon>
+                  {{ post.commentCount || 0 }}
+            </button>
+
+            <button [routerLink]="['/post-detail', post.postId]">
+                <img [src]="post.imgSrc" [alt]="post.imgAlt" />
+            </button>
+            <h3>{{ post.title }}</h3>
+        </div>
+
+        <div class="flex flex-row">
+            <mat-icon>account_circle</mat-icon>
+            <p>{{ post.userId }}</p>
+        </div>
+
+    </li>
+    }
+</ul> -->

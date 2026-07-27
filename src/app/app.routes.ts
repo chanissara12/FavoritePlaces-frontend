@@ -8,6 +8,8 @@ import { PlaceDetailComponent } from "./modules/places/components/place-detail/p
 import { UserProfileComponent } from "./modules/users/components/user-profile/user-profile.component";
 import { PostDetailComponent } from "./modules/posts/components/post-detail/post-detail.component";
 import { NewPostComponent } from "./modules/posts/components/new-post/new-post.component";
+import { PromoteComponent } from "./modules/posts/components/promote/promote.component";
+import { EditPostComponent } from "./modules/posts/components/edit-post/edit-post.component";
 
 export const routes: Routes = [
     {
@@ -35,7 +37,7 @@ export const routes: Routes = [
         component: PlaceDetailComponent
     },
     {
-        path: 'user-profile/:userId',
+        path: 'user-profile/:userId/:userName',
         component: UserProfileComponent
     },
     {
@@ -45,5 +47,13 @@ export const routes: Routes = [
     {
         path: 'post-detail/:postId',
         component: PostDetailComponent
+    },
+    {
+        path: 'promote-posts',
+        component: PromoteComponent
+    },
+    {
+        path: 'edit-post/:postId',
+        component: EditPostComponent
     },
 ]

@@ -1,34 +1,37 @@
 <app-modal>
-    <div class="flex flex-col gap-4 m-8">
-        <app-close-btn></app-close-btn>
-        <h2 class="font-bold text-2xl">Add new post</h2>
-        <form>
-        <!-- <form (ngSubmit)="onSubmit()"> -->
-            <p class="mb-4">
-                <label for="title">Title: </label>
-                <input class="w-fit border-2 rounded-xs" type="text" id="title" name="title"
-                    [(ngModel)]="enteredTitle" />
-            </p>
+    <div>
+        <div class="flex flex-col gap-4 m-4">
+            <app-close-btn></app-close-btn>
+            <h2 class="font-bold text-2xl">Add new post</h2>
+            <!-- <form> -->
+            <form (ngSubmit)="onSubmit()">
+                <p class="mb-4">
+                    <label for="title">Title: </label>
+                    <input class="w-fit border-2 rounded-xs" type="text" id="title" name="title"
+                        [(ngModel)]="enteredTitle" />
+                </p>
 
-            <p class="mb-4">
-                <label for="description">Description: </label>
-                <textarea class="w-full border-2 rounded-xs" type="text" id="description" name="description"
-                    [(ngModel)]="enteredAlt"></textarea>
-            </p>
+                <p class="mb-4">
+                    <label for="description">Description: </label>
+                    <textarea class="w-full border-2 rounded-xs" type="text" id="description" name="description"
+                        placeholder="Tell me what you think" [(ngModel)]="enteredAlt"></textarea>
+                </p>
 
-            <p class="mb-4">
-                <label for="image">Image: </label>
-                @if(imagePreview) {
-                <img class="m-8" [src]="imagePreview" width="400px" height="300px">
-                }
-                <input type="file" accept="image/*" (change)="onSelectImage($event)" />
-            </p>
+                <div class="mb-4">
+                    @if(imagePreview) {
+                    <img class="m-8" [src]="imagePreview" width="400px" height="300px">
+                    }
 
-
-            <p class="flex justify-end gap-4">
-                <a routerLink="../">Cancel</a>
-                <button type="submit">Submit</button>
-            </p>
-        </form>
+                    <p class="flex justify-between items-center gap-4">
+                        <input id="imageInput" type="file" accept="image/*" hidden (change)="onSelectImage($event)" />
+                        <label for="imageInput" class="upload-btn">
+                            <mat-icon>image</mat-icon>
+                        </label>
+                        <button class="border-2 rounded-xl p-2" type="submit">Submit</button>
+                    </p>
+                </div>
+            </form>
+        </div>
     </div>
+
 </app-modal>

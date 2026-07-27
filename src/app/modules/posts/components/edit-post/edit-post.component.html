@@ -1,0 +1,14 @@
+<app-modal>
+    <div>
+        <app-close-btn />
+        <div class="flex flex-col m-8">
+            <p class="text-4xl font-bold self-center">Edit post</p>
+            <!-- <input class="m-2" type="text"> -->
+            <input class="m-2" type="text" id="title" name="title" [(ngModel)]="enteredTitle" />
+            <!-- <h2 class="font-bold text-2xl m-2">{{ post?.title }}</h2> -->
+            <textarea class="m-2">{{ post?.imgAlt }}</textarea>
+            <img class="m-2" [src]="post?.imgSrc" [alt]="post?.imgAlt">
+            <button class="self-end rounded-2xl bg-blue-300 p-2 font-bold" type="submit">Submit</button>
+        </div>
+    </div>
+</app-modal>

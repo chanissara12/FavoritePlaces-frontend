@@ -1,11 +1,11 @@
 .fallback-text {
     text-align: center;
 }
-
+/* 
 div {
     display: flex;
     justify-content: flex-end;
-}
+} */
 
 button {
     font: inherit;

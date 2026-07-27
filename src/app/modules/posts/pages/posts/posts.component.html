@@ -1,51 +1,51 @@
-<ul>
+<ul class="">
     @for (post of posts(); track post.postId) {
-    <li class="post-item">
-        <div class="relative">
-            <!-- <div class="actions">
-                @if (post.isFav) {
-                <mat-icon class="btn add-btn stroke-red-400" title="Remove from favorites"
-                    (click)="onRemoveFavPost(post.postId, currentUser.userId)">favorite</mat-icon>
-                } @else {
-                <mat-icon class="btn add-btn" title="Add to favorites"
-                    (click)="onAddFavPost(post.postId, currentUser.userId)">favorite_border</mat-icon>
+    <li class="post-item bg-slate-600 p-8">
+        <div class="">
+            <div class="grid grid-cols-[auto_1fr_auto_auto] gap-2">
+                <mat-icon [routerLink]="['/user-profile', post.userId, post.username]"
+                    class="text-6xl! w-auto! h-auto! row-span-2">account_circle</mat-icon>
+                <div class="flex flex-col">
+                    <p>{{ post.username }}</p>
+                    <p>{{ post.createAt | date: 'medium' }}</p>
+                </div>
+                @if (post.userId == currentUser.userId) {
+                <button [routerLink]="['/edit-post', post.postId]">
+                    <mat-icon class="text-4xl! w-auto! h-auto!">edit</mat-icon>
+                </button>
+                <button (click)="onDeletePost(post.postId)">
+                    <mat-icon class="text-4xl! w-auto! h-auto!">delete</mat-icon>
+                </button>
                 }
-            </div> -->
-            <div class="flex flex-row">
-                <mat-icon>account_circle</mat-icon>
-                <p>{{ post.uploadedUserName }}</p>
             </div>
             <div>{{ post.imgAlt }}</div>
-            <p class="btn favorite-count">
-                @if (post.isFav) {
-                <mat-icon title="Remove from favorites"
-                    (click)="onRemoveFavPost(post.postId, currentUser.userId)">favorite
-                </mat-icon>
-                {{ post.favCount || 0 }}
-                } @else {
-                <mat-icon title="Add to favorites"
-                    (click)="onAddFavPost(post.postId, currentUser.userId)">favorite_border
-                </mat-icon>
-                {{ post.favCount || 0 }}
-                }
-            </p>
-            <p class="btn comment-count">
-                <mat-icon>
-                    comment
-                </mat-icon>
-                {{ post.commentCount || 0 }}
-            </p>
+            <div class="relative m-8">
+                <p class="btn favorite-count" (click)="handleFavPost(post.isFav, post.postId, currentUser.userId)">
+                    @if (post.isFav) {
+                    <mat-icon title="Remove from favorites">favorite
+                    </mat-icon>
+                    } @else {
+                    <mat-icon title="Add to favorites">favorite_border
+                    </mat-icon>
+                    }
+                    {{ post.favCount || 0 }}
+                </p>
+                <button [routerLink]="['/post-detail', post.postId]" class="btn comment-count">
+                    <mat-icon>
+                        comment
+                    </mat-icon>
+                    {{ post.commentCount || 0 }}
+                </button>
 
-            <button [routerLink]="['/post-detail', post.postId]">
-                <img [src]="post.imgSrc" [alt]="post.imgAlt" />
-            </button>
-            <h3>{{ post.title }}</h3>
+                <button [routerLink]="['/post-detail', post.postId]">
+                    <img [src]="post.imgSrc" [alt]="post.imgAlt" />
+                </button>
+                <h3>{{ post.title }}</h3>
+            </div>
         </div>
-
-
-
     </li>
     }
 </ul>
-<app-confirm-unfavorite-post-modal #dialogUnfavorite title="Do you confirm to remove place from favorite"
+<app-confirm-unfavorite-post-modal #dialogUnfavorite title="Do you confirm to remove post from favorite?"
     [message]="" />
+<app-confirm-delete-post-modal #dialogDeletePost title="Do you confirm to delete this post?" [message]="" />

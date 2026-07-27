@@ -3,9 +3,10 @@ import { inject, Injectable, Signal, signal } from '@angular/core';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
 import { UsersService } from '../../users/services/users.service';
-import { PostViewModel } from '../models/posts.model';
+import { PostCommentViewModel, PostViewModel } from '../models/posts.model';
 import { User } from '../../users/models/users.model';
 import { ErrorService } from '../../../shared/services/error.service';
+import { getErrorMessages } from '../../../shared/utils/get-error-messages';
 
 @Injectable({
   providedIn: 'root'
@@ -21,10 +22,10 @@ export class PostsService {
   loadedPosts: Signal<PostViewModel[]> = this.posts.asReadonly();
   currentUser: Signal<User> = this.usersService.currentUserData;
 
-  public getPosts(): Observable<PostViewModel[]> {
+  public getPosts(userId?: number): Observable<PostViewModel[]> {
     let getPostsUrl: string;
-    if (this.currentUser() != null) {
-      getPostsUrl = this.url + 'GetPosts?userId=' + this.currentUser().userId
+    if (userId != null) {
+      getPostsUrl = this.url + 'GetPosts?userId=' + userId
     } else {
       getPostsUrl = this.url + 'GetPosts'
     }
@@ -35,12 +36,23 @@ export class PostsService {
         catchError((error) =>
           throwError(() => new Error('Some thing went wrong fetching the posts. Please try again later.'))),
         tap({
-            next: (posts) => this.posts.set(posts)
-          })
+          next: (posts) => this.posts.set(posts)
+        })
       );
   }
 
-public favoritePost(postId: number, userId: number): Observable<Object> {
+  public postNewPost(data: FormData): Observable<Object> {
+      return this.httpClient.post(this.url + 'PostNewPost', data)
+        .pipe(
+          catchError(error => {
+            let errorMessages: string = getErrorMessages(error)
+            this.errorService.showError(errorMessages);
+            return throwError(() => new Error(errorMessages))
+          })
+        )
+    }
+
+  public favoritePost(postId: number, userId: number): Observable<Object> {
     // const prevPosts: PostViewModel[] = this.userPosts();
 
     if (this.currentUser().userId === 0) {
@@ -75,5 +87,17 @@ public favoritePost(postId: number, userId: number): Observable<Object> {
           return throwError(() => new Error('Failed to remove the selected place.'))
         })
       )
+  }
+
+  public getPostComments(postId: number): Observable<PostCommentViewModel[]> {
+    return this.httpClient.get<{ comments: PostCommentViewModel[] }>(this.url + 'getPostComments?postId=' + postId)
+      .pipe(
+        map((resData) => resData.comments),
+        catchError((error) =>
+          throwError(() => new Error('Some thing went wrong fetching the comments. Please try again later.'))),
+        // tap({
+        //     next: (comments) => this.comments.set(comments)
+        //   })
+      );
   }
 }
