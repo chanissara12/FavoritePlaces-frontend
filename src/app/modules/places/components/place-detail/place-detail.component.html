@@ -9,15 +9,15 @@
         <h2 class="font-bold text-2xl mb-4">Comments</h2>
         <ul>
             <!-- @if (isLoggedIn()) { -->
-            <button class="flex justify-end border-2 rounded-2xl p-2" (click)="showAddComment()">Add Comment
+            <button class="flex justify-end border rounded-2xl p-2" (click)="showAddComment()">Add Comment
                 <mat-icon>add_comment</mat-icon>
             </button>
             <!-- } -->
             @if (opening) {
             <div class="mb-4">
-                <textarea class="w-full border-2 rounded-2xl p-4" type="text" id="comment" name="comment"
+                <textarea class="w-full border rounded-2xl p-4" type="text" id="comment" name="comment"
                     [(ngModel)]="enteredComment"></textarea>
-                <button class="border-2 rounded-2xl p-2" type="submit" (click)="submitComment()">Add Comment
+                <button class="border rounded-2xl p-2" type="submit" (click)="submitComment()">Add Comment
                     <mat-icon>send</mat-icon>
                 </button>
             </div>

@@ -26,7 +26,7 @@ export class UserPostsComponent {
 
   async ngOnInit(): Promise<void> {
     this.isFetching.set(true);
-    await this.postsService.getPosts(this.userId())
+    await this.postsService.getUserPosts(this.userId()!)
       .subscribe({
         complete: () => {
           this.isFetching.set(false);

@@ -28,12 +28,12 @@ export class ConfirmDeletePostModalComponent {
   
     public async onComfirm(): Promise<void> {
       // console.log(this._postId, this._userId);
-      // if (this._postId && this._userId) {
-      //   await this.postsService.unfavoritePost(this._postId, this._userId).subscribe({
-      //     next: () => this.postsService.getPosts()
-      //       .subscribe()
-      //   })
-      // }
+      if (this._postId) {
+        await this.postsService.deletePost(this._postId).subscribe({
+          next: () => this.postsService.getPosts()
+            .subscribe()
+        })
+      }
       this.hideDialog();
     }
   

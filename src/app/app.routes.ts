@@ -10,6 +10,7 @@ import { PostDetailComponent } from "./modules/posts/components/post-detail/post
 import { NewPostComponent } from "./modules/posts/components/new-post/new-post.component";
 import { PromoteComponent } from "./modules/posts/components/promote/promote.component";
 import { EditPostComponent } from "./modules/posts/components/edit-post/edit-post.component";
+import { EditPostCommentComponent } from "./modules/posts/components/edit-post-comment/edit-post-comment.component";
 
 export const routes: Routes = [
     {
@@ -55,5 +56,9 @@ export const routes: Routes = [
     {
         path: 'edit-post/:postId',
         component: EditPostComponent
+    },
+    {
+        path: 'edit-post-comment/:commentId',
+        component: EditPostCommentComponent
     },
 ]

@@ -55,7 +55,7 @@ export class NewPostComponent {
   
           formData.append('title', this.enteredTitle());
           formData.append('alt', this.enteredAlt());
-          formData.append('formFile', this.selectedFile, filename);
+          formData.append('file', this.selectedFile, filename);
         //   if (this.currentUser().roles.includes('admin')) {
         //       formData.append('add_by', 'admin');
         //       formData.append('isApproved', 'Y');
@@ -63,9 +63,12 @@ export class NewPostComponent {
         //       formData.append('add_by', 'user');
         //       formData.append('isApproved', 'N');
         //   }
-          formData.append('user_id', this.currentUser().userId.toString());
+          formData.append('userId', this.currentUser().userId.toString());
   
-          console.log(formData);
+          console.log(formData.get('title'));
+          console.log(formData.get('alt'));
+          console.log(formData.get('file'));
+          console.log(formData.get('userId'));
   
           await this.postsService.postNewPost(formData).subscribe({
               next: (post) => {

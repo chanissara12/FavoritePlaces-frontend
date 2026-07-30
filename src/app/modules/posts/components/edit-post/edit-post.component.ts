@@ -16,31 +16,18 @@ import { MatIconModule } from "@angular/material/icon";
 })
 export class EditPostComponent {
   postId = input.required<number>();
-  enteredComment = signal<string>('');
 
   private postsService = inject(PostsService);
-  // private placesService = inject(PlacesService);
   // private usersService = inject(UsersService);
   private router = inject(Router);
 
   private _showAddComment: boolean = false;
   post: PostViewModel | undefined = undefined;
   postComments = signal<PostCommentViewModel[]>([]);
-  enteredTitle = this.post?.title;
+  enteredTitle = signal<string>('');
+  enteredAlt = signal<string>('');
   // isLoggedIn: Signal<boolean> = this.usersService.isLoggedIn;
   // currentUserId: number = this.usersService.currentUserData().userId; 
-
-  public get opening(): boolean {
-    return this._showAddComment;
-  }
-
-  public showAddComment(): void {
-    this._showAddComment = true
-  }
-
-  public hideAddComment(): void {
-    this._showAddComment = false
-  }
 
   public onClose(): void {
     this.router.navigate([''], {
@@ -48,21 +35,29 @@ export class EditPostComponent {
     })
   }
 
-  submitComment() {
+  onClick() {
+    console.log(this.enteredTitle());
 
+  }
+
+  public onSubmit() {
+    console.log(this.enteredTitle());
+    console.log(this.enteredAlt());
+    this.postsService.editPost(this.postId(), this.enteredTitle(), this.enteredAlt()).subscribe({
+      next: () => this.postsService.getPosts().subscribe()
+    }
+    );
+
+    this.router.navigate([''], {
+      replaceUrl: true
+    })
   }
 
   async ngOnInit(): Promise<void> {
     this.post = await this.postsService.loadedPosts().find(post => post.postId == this.postId());
-    //   await this.placesService.loadPlacesComments(this.placeId())
-    //       .subscribe({ next: (resData) => this.placeComments.set(resData) })
+    if (this.post) {
+      this.enteredTitle.set(this.post.title);
+      this.enteredAlt.set(this.post.imgAlt);
+    }
   }
-
-  // public async submitComment(): Promise<void> {
-  //     console.log(this.usersService.currentUserData());
-  //     console.log(this.currentUserId);
-
-  //     await this.placesService.addNewComment(this.placeId(), this.currentUserId, 5, this.enteredComment())
-  //         .subscribe()
-  // }
 }

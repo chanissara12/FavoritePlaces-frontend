@@ -13,10 +13,11 @@ export interface PostViewModel {
 }
 
 export interface PostCommentViewModel {
+    commentId: number;
     postId: number;
     userId: number;
-    rating: number;
     comment: string;
+    createAt: Date;
     userName: string;
     title: string;
 }

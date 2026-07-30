@@ -6,33 +6,59 @@
         <p class="m-2">{{ post?.imgAlt }}</p>
 
     </div>
+
     <div class="m-8">
         <h2 class="font-bold text-2xl mb-4">Comments</h2>
         <ul>
+            @if (isLoggedIn()) {
             <div class="mb-4">
-                <textarea class="w-full border-2 rounded-2xl p-4" type="text" id="comment" name="comment" placeholder="Comment something..."
-                    [(ngModel)]="enteredComment"></textarea>
+                <textarea class="w-full border rounded-2xl p-4" type="text" id="comment" name="comment"
+                    placeholder="Comment something..." [(ngModel)]="enteredComment"></textarea>
                 <div class="flex justify-end">
-                    <button class="flex border-2 rounded-2xl p-2 items-center" type="submit" (click)="submitComment()">Add Comment
+                    <button class="flex border rounded-2xl p-2 items-center cursor-pointer hover:bg-sky-700"
+                        type="submit" (click)="submitComment()">Add
+                        Comment
                         <mat-icon>send</mat-icon>
                     </button>
                 </div>
             </div>
-            @for (comment of postComments(); track comment.userId) {
-            <li class=" grid grid-cols-[auto_1fr_auto_auto] border gap-2 items-center border-slate-500 rounded-2xl p-4 mb-4">
-                <mat-icon class="text-2xl! w-auto! h-auto!">account_circle</mat-icon>
-                <h3>{{ comment.userName }}</h3>
-                @if (comment.userId == currentUserId) {
-                <button (click)="onEditComment()">
-                    <mat-icon class="text-2xl! w-auto! h-auto!">edit</mat-icon>
-                </button>
-                <button (click)="onDeleteComment(comment.postId)">
-                    <mat-icon class="text-2xl! w-auto! h-auto!">delete</mat-icon>
-                </button>
-                }
+            }
+            @for (comment of postComments(); track comment.commentId) {
+            <li class=" grid grid-cols-[auto_1fr_auto] border gap-2 items-center border-slate-500 rounded-2xl p-4 mb-4">
+                <mat-icon class="text-4xl! w-auto! h-auto!">account_circle</mat-icon>
+                <div>
+                    <h3>{{ comment.userName }}</h3>
+                    <h3 class="col-start-2">{{ comment.createAt | date: 'medium' }}</h3>
+                </div>
+                <div class="gap-2">
+                    @if (comment.userId == currentUserId) {
+                    <button [routerLink]="['/edit-post-comment', comment.commentId]">
+                    <!-- <button (click)="onEditComment(comment.commentId)"> -->
+                        <mat-icon class="text-3xl! w-auto! h-auto!">edit</mat-icon>
+                    </button>
+                    <button (click)="onDeleteComment(comment.commentId)">
+                        <mat-icon class="text-3xl! w-auto! h-auto!">delete</mat-icon>
+                    </button>
+                    }
+                </div>
+                <!-- @if(editing) {
+                <div class=" col-start-1 col-span-full mb-4">
+                    <textarea class="w-full border rounded-2xl p-4" type="text" id="comment" name="comment"
+                        placeholder="Comment something..." [(ngModel)]="comment.comment"></textarea>
+                    <div class="flex justify-end">
+                        <button class="flex borderrounded-2xl p-2 items-center cursor-pointer hover:bg-sky-700"
+                            type="submit" (click)="submitComment()">Edit Comment
+                            <mat-icon>send</mat-icon>
+                        </button>
+                    </div>
+                </div>
+                } @else { -->
                 <p class="col-start-1 col-span-full">{{ comment.comment }}</p>
+                <!-- } -->
             </li>
             }
         </ul>
     </div>
+
+
 </app-modal>

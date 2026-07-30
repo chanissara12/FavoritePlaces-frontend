@@ -1,19 +1,19 @@
 <app-modal>
     <div>
-        <div class="flex flex-col gap-4 m-4">
+        <div class="flex flex-col gap-4 m-8">
             <app-close-btn></app-close-btn>
             <h2 class="font-bold text-2xl">Add new post</h2>
             <!-- <form> -->
             <form (ngSubmit)="onSubmit()">
                 <p class="mb-4">
-                    <label for="title">Title: </label>
-                    <input class="w-fit border-2 rounded-xs" type="text" id="title" name="title"
+                    <label for="title">Place name: </label>
+                    <input class="w-fit border rounded-xs" type="text" id="title" name="title"
                         [(ngModel)]="enteredTitle" />
                 </p>
 
                 <p class="mb-4">
                     <label for="description">Description: </label>
-                    <textarea class="w-full border-2 rounded-xs" type="text" id="description" name="description"
+                    <textarea class="w-full border rounded-xs" type="text" id="description" name="description"
                         placeholder="Tell me what you think" [(ngModel)]="enteredAlt"></textarea>
                 </p>
 
@@ -22,13 +22,13 @@
                     <img class="m-8" [src]="imagePreview" width="400px" height="300px">
                     }
 
-                    <p class="flex justify-between items-center gap-4">
+                    <div class="flex justify-between items-center">
                         <input id="imageInput" type="file" accept="image/*" hidden (change)="onSelectImage($event)" />
                         <label for="imageInput" class="upload-btn">
-                            <mat-icon>image</mat-icon>
+                            <mat-icon class="text-4xl! w-auto! h-auto!" >image</mat-icon>
                         </label>
-                        <button class="border-2 rounded-xl p-2" type="submit">Submit</button>
-                    </p>
+                        <button class="border rounded-xl p-2 cursor-pointer bg hover:bg-sky-700" type="submit">Submit</button>
+                    </div>
                 </div>
             </form>
         </div>

@@ -22,10 +22,10 @@ export class PostsService {
   loadedPosts: Signal<PostViewModel[]> = this.posts.asReadonly();
   currentUser: Signal<User> = this.usersService.currentUserData;
 
-  public getPosts(userId?: number): Observable<PostViewModel[]> {
+  public getPosts(): Observable<PostViewModel[]> {
     let getPostsUrl: string;
-    if (userId != null) {
-      getPostsUrl = this.url + 'GetPosts?userId=' + userId
+    if (this.currentUser != null) {
+      getPostsUrl = this.url + 'GetPosts?userId=' + this.currentUser().userId
     } else {
       getPostsUrl = this.url + 'GetPosts'
     }
@@ -41,16 +41,54 @@ export class PostsService {
       );
   }
 
+  public getUserPosts(userId: number): Observable<PostViewModel[]> {
+    return this.httpClient.get<{ posts: PostViewModel[] }>(this.url + 'GetUserPosts?userId=' + userId)
+      .pipe(
+        map((resData) => resData.posts),
+        catchError((error) =>
+          throwError(() => new Error('Some thing went wrong fetching the posts. Please try again later.'))),
+        tap({
+          next: (posts) => this.posts.set(posts)
+        })
+      );
+  }
+
   public postNewPost(data: FormData): Observable<Object> {
-      return this.httpClient.post(this.url + 'PostNewPost', data)
-        .pipe(
-          catchError(error => {
-            let errorMessages: string = getErrorMessages(error)
-            this.errorService.showError(errorMessages);
-            return throwError(() => new Error(errorMessages))
-          })
-        )
-    }
+    return this.httpClient.post(this.url + 'PostNewPost', data)
+      .pipe(
+        catchError(error => {
+          let errorMessages: string = getErrorMessages(error)
+          this.errorService.showError(errorMessages);
+          return throwError(() => new Error(errorMessages))
+        })
+      )
+  }
+
+  public editPost(postId: number, title: string, alt: string): Observable<Object> {
+    return this.httpClient.post(this.url + 'EditPost', {
+      postId: postId,
+      title: title,
+      alt: alt
+    })
+      .pipe(
+        catchError(error => {
+          let errorMessages: string = getErrorMessages(error)
+          this.errorService.showError(errorMessages);
+          return throwError(() => new Error(errorMessages))
+        })
+      )
+  }
+
+  public deletePost(postId: number): Observable<Object> {
+    return this.httpClient.post(this.url + 'DeletePost', postId)
+      .pipe(
+        catchError(error => {
+          let errorMessages: string = getErrorMessages(error)
+          this.errorService.showError(errorMessages);
+          return throwError(() => new Error(errorMessages))
+        })
+      )
+  }
 
   public favoritePost(postId: number, userId: number): Observable<Object> {
     // const prevPosts: PostViewModel[] = this.userPosts();
@@ -99,5 +137,51 @@ export class PostsService {
         //     next: (comments) => this.comments.set(comments)
         //   })
       );
+  }
+
+  public postComment(postId: number, userId: number, comment: string): Observable<Object> {
+    return this.httpClient.post(this.url + 'PostComment', {
+      postId: postId,
+      userId: userId,
+      comment: comment
+    })
+      .pipe(
+        catchError(error => {
+          let errorMessages: string = getErrorMessages(error)
+          this.errorService.showError(errorMessages);
+          return throwError(() => new Error(errorMessages))
+        })
+      )
+  }
+
+  public editComment(commentId: number, postId: number, userId: number, comment: string) {
+    return this.httpClient.post(this.url + 'EditComment', {
+      commentId: commentId,
+      postId: postId,
+      userId: userId,
+      comment: comment
+    })
+      .pipe(
+        catchError(error => {
+          let errorMessages: string = getErrorMessages(error)
+          this.errorService.showError(errorMessages);
+          return throwError(() => new Error(errorMessages))
+        })
+      )
+  }
+
+  public deleteComment(commentId: number, postId: number, userId: number) {
+    return this.httpClient.post(this.url + 'DeleteComment', {
+      commentId: commentId,
+      postId: postId,
+      userId: userId
+    })
+      .pipe(
+        catchError(error => {
+          let errorMessages: string = getErrorMessages(error)
+          this.errorService.showError(errorMessages);
+          return throwError(() => new Error(errorMessages))
+        })
+      )
   }
 }

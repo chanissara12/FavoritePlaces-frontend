@@ -16,12 +16,21 @@ export class UsersService {
         roles: []
     });
     isLoggedIn = signal<boolean>(false);
-    
+
     private httpClient = inject(HttpClient);
     private errorService = inject(ErrorService);
     private url: string = environment.urlApi + 'users/';
 
     currentUserData = this.currentUser.asReadonly();
+
+    public loadUserFromLocalStorage(): void {
+        const user = localStorage.getItem('currentUser');
+
+        if (user) {
+            this.currentUser.set(JSON.parse(user));
+            this.isLoggedIn.set(true)
+        }
+    }
 
     public UserLogin(userName: string, password: string): Observable<Object> {
         return this.httpClient.post<{ currentUser: User }>(this.url + 'login', {
@@ -31,6 +40,7 @@ export class UsersService {
             tap({
                 next: (resData) => {
                     this.currentUser.set(resData.currentUser);
+                    localStorage.setItem('currentUser', JSON.stringify(this.currentUser()));
                 }
             }),
             catchError(error => {

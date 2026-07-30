@@ -1,47 +1,45 @@
 <ul class="">
     @for (post of posts(); track post.postId) {
     <li class="post-item bg-slate-600 p-8">
-        <div class="">
-            <div class="grid grid-cols-[auto_1fr_auto_auto] gap-2">
-                <mat-icon [routerLink]="['/user-profile', post.userId, post.username]"
-                    class="text-6xl! w-auto! h-auto! row-span-2">account_circle</mat-icon>
-                <div class="flex flex-col">
-                    <p>{{ post.username }}</p>
-                    <p>{{ post.createAt | date: 'medium' }}</p>
-                </div>
-                @if (post.userId == currentUser.userId) {
-                <button [routerLink]="['/edit-post', post.postId]">
-                    <mat-icon class="text-4xl! w-auto! h-auto!">edit</mat-icon>
-                </button>
-                <button (click)="onDeletePost(post.postId)">
-                    <mat-icon class="text-4xl! w-auto! h-auto!">delete</mat-icon>
-                </button>
+        <div class="grid grid-cols-[auto_1fr_auto_auto] gap-2">
+            <mat-icon [routerLink]="['/user-profile', post.userId, post.username]"
+                class="text-6xl! w-auto! h-auto! row-span-2">account_circle</mat-icon>
+            <div class="flex flex-col">
+                <p>{{ post.username }}</p>
+                <p>{{ post.createAt | date: 'medium' }}</p>
+            </div>
+            @if (post.userId == currentUser.userId) {
+            <button [routerLink]="['/edit-post', post.postId]">
+                <mat-icon class="text-4xl! w-auto! h-auto!">edit</mat-icon>
+            </button>
+            <button (click)="onDeletePost(post.postId)">
+                <mat-icon class="text-4xl! w-auto! h-auto!">delete</mat-icon>
+            </button>
+            }
+        </div>
+        <div>{{ post.imgAlt }}</div>
+        <div class="relative m-8">
+            <p class="btn favorite-count" (click)="handleFavPost(post.isFav, post.postId, currentUser.userId)">
+                @if (post.isFav) {
+                <mat-icon title="Remove from favorites">favorite
+                </mat-icon>
+                } @else {
+                <mat-icon title="Add to favorites">favorite_border
+                </mat-icon>
                 }
-            </div>
-            <div>{{ post.imgAlt }}</div>
-            <div class="relative m-8">
-                <p class="btn favorite-count" (click)="handleFavPost(post.isFav, post.postId, currentUser.userId)">
-                    @if (post.isFav) {
-                    <mat-icon title="Remove from favorites">favorite
-                    </mat-icon>
-                    } @else {
-                    <mat-icon title="Add to favorites">favorite_border
-                    </mat-icon>
-                    }
-                    {{ post.favCount || 0 }}
-                </p>
-                <button [routerLink]="['/post-detail', post.postId]" class="btn comment-count">
-                    <mat-icon>
-                        comment
-                    </mat-icon>
-                    {{ post.commentCount || 0 }}
-                </button>
+                {{ post.favCount || 0 }}
+            </p>
+            <button [routerLink]="['/post-detail', post.postId]" class="btn comment-count">
+                <mat-icon>
+                    comment
+                </mat-icon>
+                {{ post.commentCount || 0 }}
+            </button>
 
-                <button [routerLink]="['/post-detail', post.postId]">
-                    <img [src]="post.imgSrc" [alt]="post.imgAlt" />
-                </button>
-                <h3>{{ post.title }}</h3>
-            </div>
+            <button [routerLink]="['/post-detail', post.postId]">
+                <img [src]="post.imgSrc" [alt]="post.imgAlt" />
+            </button>
+            <h3>{{ post.title }}</h3>
         </div>
     </li>
     }
