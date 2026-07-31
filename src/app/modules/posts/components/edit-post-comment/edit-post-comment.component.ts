@@ -1,7 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 import { ModalComponent } from "../../../../shared/modal/modal.component";
 import { CloseBtnComponent } from "../../../../shared/buttons/close-btn/close-btn.component";
 import { FormsModule } from '@angular/forms';
+import { PostCommentViewModel } from '../../models/posts.model';
 
 @Component({
   selector: 'app-edit-post-comment',
@@ -11,7 +12,9 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './edit-post-comment.component.css'
 })
 export class EditPostCommentComponent {
-  enteredComment = signal('');
+  comment = input<PostCommentViewModel>();
+  enteredComment = this.comment()?.comment;
+
   onSubmit() {
     throw new Error('Method not implemented.');
   }

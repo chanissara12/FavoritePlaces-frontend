@@ -35,11 +35,6 @@ export class EditPostComponent {
     })
   }
 
-  onClick() {
-    console.log(this.enteredTitle());
-
-  }
-
   public onSubmit() {
     console.log(this.enteredTitle());
     console.log(this.enteredAlt());

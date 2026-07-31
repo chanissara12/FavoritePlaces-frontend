@@ -154,7 +154,7 @@ export class PostsService {
       )
   }
 
-  public editComment(commentId: number, postId: number, userId: number, comment: string) {
+  public editComment(commentId: number, postId: number, userId: number, comment: string): Observable<Object> {
     return this.httpClient.post(this.url + 'EditComment', {
       commentId: commentId,
       postId: postId,
@@ -170,11 +170,37 @@ export class PostsService {
       )
   }
 
-  public deleteComment(commentId: number, postId: number, userId: number) {
+  public deleteComment(commentId: number, postId: number, userId: number): Observable<Object> {
     return this.httpClient.post(this.url + 'DeleteComment', {
       commentId: commentId,
       postId: postId,
       userId: userId
+    })
+      .pipe(
+        catchError(error => {
+          let errorMessages: string = getErrorMessages(error)
+          this.errorService.showError(errorMessages);
+          return throwError(() => new Error(errorMessages))
+        })
+      )
+  }
+
+  public getMostFavPosts(): Observable<PostViewModel[]> {
+    return this.httpClient.get<{ posts: PostViewModel[] }>(this.url + 'getMostFavPosts')
+      .pipe(
+        map((resData) => resData.posts),
+        catchError((error) =>
+          throwError(() => new Error('Some thing went wrong fetching the posts. Please try again later.'))),
+        tap({
+          next: (posts) => this.posts.set(posts)
+        })
+      );
+  }
+
+  public promotePostToPlace(postId: number, title: string): Observable<Object> {
+    return this.httpClient.post(this.url + 'PromotePostToPlace', {
+      postId: postId,
+      title: title
     })
       .pipe(
         catchError(error => {

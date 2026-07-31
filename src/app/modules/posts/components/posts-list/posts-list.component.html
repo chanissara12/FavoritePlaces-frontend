@@ -22,7 +22,7 @@
             <button [routerLink]="['/post-detail', post.postId]">
                 <img [src]="post.imgSrc" [alt]="post.imgAlt" />
             </button>
-            <button class="promote-button" (click)="onPromotePost(post.postId)">
+            <button class="promote-button" (click)="onPromotePost(post.postId, post.title)">
                 Promote
             </button>
             <!-- <h3>{{ post.title }}</h3> -->
@@ -31,7 +31,7 @@
     }
 </ul>
 
-<app-confirm-promote-post-modal #dialogPromote title="Do you confirm to promote this post"
+<app-confirm-promote-post-modal #dialogPromote title="Do you want to change place name?"
     [message]="" />
 
 <!-- <ul>

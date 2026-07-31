@@ -26,7 +26,7 @@ export class PostDetailComponent {
     private router = inject(Router);
 
     private _showAddComment: boolean = false;
-    private _showEditComment: boolean = false;
+    // private _showEditComment: boolean = false;
     post: PostViewModel | undefined = undefined;
     postComments = signal<PostCommentViewModel[]>([]);
     isLoggedIn: Signal<boolean> = this.usersService.isLoggedIn;
@@ -36,9 +36,9 @@ export class PostDetailComponent {
         return this._showAddComment;
     }
 
-    public get editing(): boolean {
-        return this._showEditComment;
-    }
+    // public get editing(): boolean {
+    //     return this._showEditComment;
+    // }
 
     public showAddComment(): void {
         this._showAddComment = true
@@ -54,8 +54,9 @@ export class PostDetailComponent {
         })
     }
 
-    public onEditComment(commentId: number): void {
-        this._showEditComment = !this._showEditComment;
+    public onEditComment(comment: PostCommentViewModel): void {
+        comment.isEditing = !comment.isEditing
+        // this._showEditComment = !this._showEditComment;
         // this.enteredComment.set(comment);
         // this.enteredComment.set(this.postComments().find(comment => comment.commentId == commentId).comment)
         // this.enteredComment = this.postComments().find(comment => comment.commentId == commentId)?.comment;
@@ -79,6 +80,14 @@ export class PostDetailComponent {
 
     public async submitComment(): Promise<void> {
         await this.postsService.postComment(this.postId(), this.currentUserId, this.enteredComment()).subscribe({
+            next: () => this.router.navigate(['./'], {
+                replaceUrl: true
+            })
+        })
+    }
+
+    public async submitEditedComment(commentId: number, comment: string): Promise<void> {
+        await this.postsService.editComment(commentId, this.postId(), this.currentUserId, comment).subscribe({
             next: () => this.router.navigate(['./'], {
                 replaceUrl: true
             })

@@ -20,4 +20,5 @@ export interface PostCommentViewModel {
     createAt: Date;
     userName: string;
     title: string;
+    isEditing: boolean;
 }

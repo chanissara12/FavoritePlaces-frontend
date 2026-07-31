@@ -20,7 +20,7 @@ export class PostsListComponent {
 
   // posts: Signal<PostViewModel[] | undefined> = this.postsService.loadedPosts;
 
-  public onPromotePost(postId: number): void {
-      this.dialogPromote()?.showDialog(postId)
+  public onPromotePost(postId: number, title: string): void {
+      this.dialogPromote()?.showDialog(postId, title)
     }
 }

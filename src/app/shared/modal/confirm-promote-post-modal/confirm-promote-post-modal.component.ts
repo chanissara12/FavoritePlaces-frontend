@@ -1,11 +1,12 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { ModalComponent } from "../modal.component";
 import { PostsService } from '../../../modules/posts/services/posts.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-confirm-promote-post-modal',
   standalone: true,
-  imports: [ModalComponent],
+  imports: [ModalComponent, FormsModule],
   templateUrl: './confirm-promote-post-modal.component.html',
   styleUrl: './confirm-promote-post-modal.component.css'
 })
@@ -16,7 +17,7 @@ export class ConfirmPromotePostModalComponent {
   private _isOpen: boolean = false;
   private postsService = inject(PostsService);
   private _postId: number | null = null;
-  // private _userId: number | null = null;
+  placeName = signal<string>('');
 
   public get opening(): boolean {
     return this._isOpen;
@@ -28,18 +29,18 @@ export class ConfirmPromotePostModalComponent {
 
   public async onComfirm(): Promise<void> {
     // console.log(this._postId, this._userId);
-    // if (this._postId && this._userId) {
-    //   await this.postsService.unfavoritePost(this._postId, this._userId).subscribe({
-    //     next: () => this.postsService.getPosts()
-    //       .subscribe()
-    //   })
-    // }
+    if (this._postId && this.placeName) {
+      await this.postsService.promotePostToPlace(this._postId, this.placeName()).subscribe({
+        next: () => this.postsService.getMostFavPosts()
+          .subscribe()
+      })
+    }
     this.hideDialog();
   }
 
-  public showDialog(placeId: number): void {
-    this._postId = placeId;
-    // this._userId = userId;
+  public showDialog(postId: number, title: string): void {
+    this._postId = postId;
+    this.placeName.set(title);
     this._isOpen = true;
   }
 
