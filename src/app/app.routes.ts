@@ -11,11 +11,16 @@ import { NewPostComponent } from "./modules/posts/components/new-post/new-post.c
 import { PromoteComponent } from "./modules/posts/components/promote/promote.component";
 import { EditPostComponent } from "./modules/posts/components/edit-post/edit-post.component";
 import { EditPostCommentComponent } from "./modules/posts/components/edit-post-comment/edit-post-comment.component";
+import { UnauthorizeComponent } from "./shared/pages/unauthorize/unauthorize.component";
 
 export const routes: Routes = [
     {
         path: '', //starting path
         component: HomeComponent,
+    },
+    {
+        path: 'unauthorize',
+        component: UnauthorizeComponent,
     },
     {
         path: 'login',

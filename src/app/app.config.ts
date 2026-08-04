@@ -4,7 +4,7 @@ import { routes } from "./app.routes";
 import { HttpRequest, HttpHandlerFn, provideHttpClient, withInterceptors, HttpEventType } from '@angular/common/http';
 import { tap } from 'rxjs';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-// import { appInterceptor } from "./app.interceptor";
+import { appInterceptor } from "./app.interceptor";
 
 function loggingInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) {
     console.log('[Outgoing Request]');
@@ -24,15 +24,22 @@ function loggingInterceptor(request: HttpRequest<unknown>, next: HttpHandlerFn) 
 
 export const appConfig: ApplicationConfig = {
     providers: [provideHttpClient(
-        withInterceptors([loggingInterceptor])),
-        // withInterceptors([loggingInterceptor, appInterceptor])),
+        // withInterceptors([loggingInterceptor])),
+        withInterceptors([loggingInterceptor, appInterceptor])),
     // {
     //     provide: APP_INITIALIZER,
     //     useFactory: (utils: UtilsService) => utils.initialize(),
     //     deps: [UtilsService],
     //     multi: true
     // },
+    // {
+    //     provide: HTTP_INTERCEPTORS,
+    //     useClass: TokenInterceptor,
+    //     multi: true
+    // },
     provideRouter(routes, withComponentInputBinding(), withRouterConfig({
         paramsInheritanceStrategy: 'always'
+    }), withRouterConfig({
+        onSameUrlNavigation: 'reload'
     })), provideAnimationsAsync()]
 }

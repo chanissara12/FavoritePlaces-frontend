@@ -5,6 +5,7 @@ import { ErrorService } from "../../../shared/services/error.service";
 import { catchError, map, Observable, tap, throwError } from "rxjs";
 import { environment } from "../../../../environments/environment.development";
 import { getErrorMessages } from "../../../shared/utils/get-error-messages";
+import { clearAccessToken, clearRefreshToken } from "../../../shared/utils/token-handler";
 
 @Injectable({
     providedIn: 'root'
@@ -13,13 +14,16 @@ export class UsersService {
     private currentUser = signal<User>({
         userId: 0,
         userName: "",
-        roles: []
+        roles: [],
+        accessToken: "",
+        refreshToken: ""
     });
     isLoggedIn = signal<boolean>(false);
 
     private httpClient = inject(HttpClient);
     private errorService = inject(ErrorService);
     private url: string = environment.urlApi + 'users/';
+    private urlLogin: string = environment.urlApi + 'login/';
 
     currentUserData = this.currentUser.asReadonly();
 
@@ -33,7 +37,7 @@ export class UsersService {
     }
 
     public UserLogin(userName: string, password: string): Observable<Object> {
-        return this.httpClient.post<{ currentUser: User }>(this.url + 'login', {
+        return this.httpClient.post<{ currentUser: User }>(this.urlLogin, {
             userName: userName,
             password: password
         }).pipe(
@@ -41,6 +45,8 @@ export class UsersService {
                 next: (resData) => {
                     this.currentUser.set(resData.currentUser);
                     localStorage.setItem('currentUser', JSON.stringify(this.currentUser()));
+                    localStorage.setItem('accessToken', resData.currentUser.accessToken)
+                    localStorage.setItem('refreshToken', resData.currentUser.refreshToken)
                 }
             }),
             catchError(error => {
@@ -73,8 +79,13 @@ export class UsersService {
         this.currentUser.set({
             userId: 0,
             userName: "",
-            roles: []
+            roles: [],
+            accessToken: "",
+            refreshToken: ""
         });
+        localStorage.setItem('currentUser', "");
+        clearAccessToken();
+        clearRefreshToken();
         this.isLoggedIn.set(false)
     }
 }

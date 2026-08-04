@@ -6,6 +6,10 @@
   /* border: red solid 1px; */
 }
 
+/* :root {
+  color-scheme: dark;
+} */
+
 html {
   font-family: "Bricolage Grotesque", sans-serif;
   line-height: 1.5;

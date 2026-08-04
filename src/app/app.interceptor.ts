@@ -2,29 +2,35 @@ import { HttpErrorResponse, HttpEvent, HttpHandlerFn, HttpInterceptorFn, HttpReq
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { BehaviorSubject, catchError, filter, Observable, of, switchMap, take, tap, throwError } from 'rxjs';
+import { AuthService } from './shared/services/auth.service';
+import { clearAccessToken, clearRefreshToken, getAccessToken, getRefreshToken, setAccessToken, setRefreshToken } from './shared/utils/token-handler';
 
 let isRefreshing = false;
 const refreshTokenSubject = new BehaviorSubject<any>(null);
 
 export const appInterceptor: HttpInterceptorFn = (request: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> => {
-    const router = inject(Router)
+    const auth = inject(AuthService);
+    const router = inject(Router);
 
     // const no401Refresh = request.context.get(NO_401_REFRESH);
-    request.addToken(request);
+    request = addToken(request);
 
     return next(request)
         .pipe(
             tap(handleTokens),
-              catchError((err: HttpErrorResponse) => {
-                return throwError(() => err);
-            // catchError((err: HttpErrorResponse) => {
-            //     if ([401, 403].includes(err.status)) {
-            //         if (err.status === 401 && !no401Refresh)
-            //             return handle401WithRefreshError(request, next, auth);
-            //         else
-            //             return handle401Or403Error(err, shared, router);
-            //     }
+            //   catchError((err: HttpErrorResponse) => {
             //     return throwError(() => err);
+            catchError((err: HttpErrorResponse) => {
+                console.log(err);
+                // debugger
+                if ([400, 401, 403].includes(err.status)) {
+                    if (err.status === 401)
+                    // if (err.status === 401 && !no401Refresh)
+                        return handle401WithRefreshError(request, next, auth);
+                    else
+                        return handle401Or403Error(err, router);
+                }
+                return throwError(() => err);
             })
         )
 }
@@ -46,16 +52,20 @@ const handleTokens = (httpEvent: HttpEvent<any>) => {
     if (!httpEvent.ok)
         return;
 
-    if (!httpEvent.headers.has('Update-AccessToken')
-        && !httpEvent.headers.has('Update-RefreshToken')
-        && !httpEvent.headers.has('Update-System'))
+    console.log(httpEvent);
+    console.log(httpEvent.headers);
+    console.log(httpEvent.headers.get('Update-Access-Token'));
+
+    if (!httpEvent.headers.has('Update-Access-Token')
+        && !httpEvent.headers.has('Update-Refresh-Token'))
+        // && !httpEvent.headers.has('Update-System'))
         return;
 
-    const accessToken = httpEvent.headers.get('Update-AccessToken') || '';
+    const accessToken = httpEvent.headers.get('Update-Access-Token') || '';
     if (!!accessToken)
         setAccessToken(accessToken);
 
-    const refreshToken = httpEvent.headers.get('Update-RefreshToken') || '';
+    const refreshToken = httpEvent.headers.get('Update-Refresh-Token') || '';
     if (!!refreshToken)
         setRefreshToken(refreshToken);
 
@@ -70,7 +80,9 @@ const handle401WithRefreshError = (request: HttpRequest<any>, next: HttpHandlerF
         refreshTokenSubject.next(null);
 
         const refreshToken = getRefreshToken();
-        const refreshTokenParam: Partial<RefreshTokenParam> = { refreshToken };
+        const refreshTokenParam = { refreshToken };
+        // const refreshTokenParam: Partial<RefreshTokenParam> = { refreshToken };
+        // return refreshToken(refreshTokenParam)
         return auth.refreshToken(refreshTokenParam)
             .pipe(
                 switchMap(() => {
@@ -90,13 +102,13 @@ const handle401WithRefreshError = (request: HttpRequest<any>, next: HttpHandlerF
         );
 }
 
-const handle401Or403Error = (errorResponse: HttpErrorResponse, shared: SharedService, router: Router): Observable<any> => {
+const handle401Or403Error = (errorResponse: HttpErrorResponse, router: Router): Observable<any> => {
     clearAccessToken();
     clearRefreshToken();
 
     let errorMessage = getErrorMessage(errorResponse);
-    shared.hideLoading(); // for close loading screen opened from before call 401 request 
-    router.navigate([Route.unauthorized], {
+    // shared.hideLoading(); // for close loading screen opened from before call 401 request 
+    router.navigate(['/unauthorize'], {
         skipLocationChange: true,
         state: {
             message: errorMessage
@@ -115,8 +127,4 @@ const getErrorMessage = (errorResponse: HttpErrorResponse): string => {
     else if (typeof (errors) === 'object' && Array.isArray(errors))
         errorMessage = errors[0]?.['message'];
     return errorMessage;
-}
-
-const getAccessToken() = () => {
-    
 }

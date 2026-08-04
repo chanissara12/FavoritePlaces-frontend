@@ -1,7 +1,6 @@
 @if(isLoggedIn()) {
 <div class="gap-2">
-    <mat-icon 
-        [routerLink]="['/user-profile', currentUser().userId, currentUser().userName]"
+    <mat-icon [routerLink]="['/user-profile', currentUser().userId, currentUser().userName]"
         class="text-4xl! w-auto! h-auto!">account_circle</mat-icon>
     <p class="text-3xl">{{ currentUser().userName }}</p>
     <a (click)="onLogOut()">Logout</a>
@@ -13,6 +12,16 @@
 <app-header />
 
 <main>
+    <dx-button text="Hello DevExtreme" type="success">
+    </dx-button>
+    @if(isPostsPage()) {
+    <button class="flex justify-self-end mr-20 text-black p-2 border rounded bg-sky-300 hover:bg-sky-800"
+        (click)="isPostsPage.set(false)">Switch to Recommend Places</button>
     <app-feed />
-    <!-- <app-available-places /> -->
+    }
+    @else {
+    <button class="flex justify-self-end mr-20 text-black p-2 border rounded bg-sky-300 hover:bg-sky-800"
+        (click)="isPostsPage.set(true)">Switch to Feed</button>
+    <app-available-places />
+    }
 </main>

@@ -210,4 +210,8 @@ export class PostsService {
         })
       )
   }
+
+  public clearPostList(): void {
+    this.posts.set([]);
+  }
 }

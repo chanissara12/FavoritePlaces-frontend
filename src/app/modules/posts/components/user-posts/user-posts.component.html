@@ -6,13 +6,7 @@
   @if (error()) {
   <p class="fallback-text">{{ error() }}</p>
   }
-  <div class="m-8">
+  <div class="m-16">
     <app-posts [posts]="posts()!" />
   </div>
-  
-  <!-- @if (places()) {
-  <app-places [places]="places()!" [isAvailablePlaces]="false"/>
-  } @else if (places().length === 0) {
-  <p class="fallback-text">Unfortunately, no places could be found.</p>
-  } -->
 </app-places-container>
